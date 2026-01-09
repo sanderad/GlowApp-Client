@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+html {
+  /* Esto obliga a que el espacio del scroll siempre esté reservado */
+  scrollbar-gutter: stable; 
+  /* Fallback para navegadores viejos */
+  overflow-y: scroll;
+}
+
+/* Opcional: Hacer el scroll más bonito y delgado en Chrome/Edge */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
