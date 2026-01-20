@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import StylistCard from '@/components/StylistCard.vue'
 
 // --- DATOS DE CATEGORÍAS (Con sus degradados específicos) ---
@@ -34,7 +34,23 @@ const categories = ref([
   },
 ])
 
+const selectedCategory = ref('Todas')
+
 // --- DATOS DE ESTILISTAS (Con el colorTheme correcto) ---
+const isLoading = ref(true)
+const error = ref('')
+
+interface Stylist {
+  id: number
+  name: string
+  image: string
+  rating: number
+  specialty: string
+  yearsExp: string
+  colorTheme: string
+  tags: string[]
+}
+
 const stylists = ref([
   {
     id: 1,
@@ -70,6 +86,57 @@ const stylists = ref([
     colorTheme: 'orange' as const,
   },
 ])
+
+// Función para obtener datos del Backend
+const fetchStylists = async () => {
+  try {
+    isLoading.value = true
+    
+    // Construir URL con filtros
+    let url = 'http://localhost:5000/stylists'
+    if (selectedCategory.value !== 'Todas') {
+      url += `?category=${selectedCategory.value}`
+    }
+
+    const response = await fetch(url)
+    if (!response.ok) throw new Error('Error cargando estilistas')
+    
+    const data = await response.json()
+    
+    // TRANSFORMACIÓN DE DATOS (Backend -> Frontend)
+    // El backend no devuelve "tags", así que creamos tags 
+    // basados en la categoría o servicios si los tuviéramos
+    stylists.value = data.map((item: any) => ({
+      id: item.id,
+      name: item.businessName, // Mostramos el nombre del negocio, no el personal
+      image: item.photoUrl || 'https://via.placeholder.com/150', // Fallback si no hay foto
+      rating: item.rating,
+      specialty: item.category, // La categoría principal
+      yearsExp: `${item.yearsOfExperience} años exp.`,
+      colorTheme: item.colorTheme,
+      
+      // Generamos tags visuales
+      tags: [item.category, 'Domicilio'] 
+    }))
+
+  } catch (err) {
+    console.error(err)
+    error.value = 'No se pudieron cargar los estilistas.'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// Cargar al inicio
+onMounted(() => {
+  fetchStylists()
+})
+
+// Recargar cuando cambia la categoría
+const selectCategory = (catName: string) => {
+  selectedCategory.value = catName
+  fetchStylists()
+}
 </script>
 
 <template>
@@ -114,6 +181,7 @@ const stylists = ref([
         <div
           v-for="cat in categories"
           :key="cat.id"
+          @click="selectCategory(cat.name)"
           class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group"
         >
           <div
@@ -131,7 +199,10 @@ const stylists = ref([
       </h2>
 
       <div class="flex flex-col">
-        <StylistCard v-for="stylist in stylists" :key="stylist.id" v-bind="stylist" />
+        <div v-if="isLoading" class="flex items-center justify-center">
+          <i class="fa-solid fa-spinner animate-spin text-pink-500"></i>
+        </div>
+        <StylistCard v-if="!isLoading" v-for="stylist in stylists" :key="stylist!.id" v-bind="stylist" />
       </div>
     </main>
   </div>

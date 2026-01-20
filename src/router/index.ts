@@ -39,28 +39,28 @@ const router = createRouter({
       path: '/chat/:id',
       name: 'chat-detail',
       component: () => import('../views/ChatDetailView.vue'),
-      meta: { showBottomNav: false } // Ocultamos la nav principal para dar foco al teclado
+      meta: { showBottomNav: false }, // Ocultamos la nav principal para dar foco al teclado
     },
     // LOGIN
     {
       path: '/login',
       name: 'login',
       component: () => import('../views/auth/LoginView.vue'),
-      meta: { showBottomNav: false }
+      meta: { showBottomNav: false },
     },
     // REGISTRO CLIENTE (Usuario normal)
     {
       path: '/registro-cliente',
       name: 'client-register',
       component: () => import('../views/auth/ClientRegisterView.vue'),
-      meta: { showBottomNav: false }
+      meta: { showBottomNav: false },
     },
     // REGISTRO ESTILISTA (Tu código adaptado)
     {
       path: '/registro-estilista',
       name: 'stylist-register',
       component: () => import('../views/auth/StylistRegisterView.vue'),
-      meta: { showBottomNav: false }
+      meta: { showBottomNav: false },
     },
   ],
   // Esto hace que al cambiar de página, el scroll vuelva arriba

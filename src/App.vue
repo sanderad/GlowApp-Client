@@ -7,15 +7,13 @@ const route = useRoute()
 
 <template>
   <div class="bg-gray-50 min-h-screen font-sans pb-24 text-gray-800 relative overflow-x-hidden">
-    
     <RouterView v-slot="{ Component }">
       <Transition name="fade-slide">
         <component :is="Component" :key="route.path" class="w-full absolute-during-transition" />
       </Transition>
     </RouterView>
-    
-    <BottomNav v-if="route.meta.showBottomNav" class="z-50" />
 
+    <BottomNav v-if="route.meta.showBottomNav" class="z-50" />
   </div>
 </template>
 
@@ -25,7 +23,9 @@ const route = useRoute()
 /* Duración de la animación */
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* La página que ENTRA */

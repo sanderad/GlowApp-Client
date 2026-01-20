@@ -2,7 +2,7 @@
 
 html {
   /* Esto obliga a que el espacio del scroll siempre esté reservado */
-  scrollbar-gutter: stable; 
+  scrollbar-gutter: stable;
   /* Fallback para navegadores viejos */
   overflow-y: scroll;
 }

@@ -4,7 +4,11 @@ import { computed } from 'vue'
 const props = defineProps<{
   id: number
   name: string
-  image: string
+  user: {
+    fullName: string,
+    photoUrl: string
+  },
+  image: string,
   rating: number
   specialty: string
   yearsExp: string
@@ -32,7 +36,7 @@ const tagClasses = computed(() => {
       class="bg-white p-3 rounded-2xl shadow-md shadow-gray-100 border border-gray-50 flex gap-3 mb-4 hover:shadow-lg transition cursor-pointer"
     >
       <div class="w-24 h-24 bg-gray-200 rounded-xl overflow-hidden shrink-0 relative">
-        <img :src="image" :alt="name" class="w-full h-full object-cover" />
+        <img :src="image || user.photoUrl" :alt="name" class="w-full h-full object-cover" />
         <div
           class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-1"
         >

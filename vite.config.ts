@@ -18,6 +18,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['meat-seeker-thrown-lookup.trycloudflare.com']
+    allowedHosts: ['converted-cir-steven-senator.trycloudflare.com ']
   }
 })
