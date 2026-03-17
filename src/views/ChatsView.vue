@@ -14,18 +14,22 @@ onMounted(() => {
   chatStore.fetchChatsList()
 })
 
-const getRelativeTime = (isoString: string | null) => {
+const getRelativeTime = (isoString: string | null | undefined) => {
+  // 1. Añadimos 'undefined' al tipo para que acepte cualquier caso vacío sin quejarse
   if (!isoString) return ''
-  // Utiliza date-fns para devolver "Hoy a las 10:42", "Ayer a las...", etc.
-  const date = new Date(isoString)
-  return formatRelative(date, new Date(), { locale: es })
-    .split(' a las')[0] // Cortamos la hora para que el tabulador mantenga el estilo corto del UI
-    .replace(
-      'hoy',
-      new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    )
-}
 
+  const date = new Date(isoString)
+  const relativeText = formatRelative(date, new Date(), { locale: es })
+
+  // 2. Extraemos la primera parte del split y le ponemos el '!'
+  // Esto le jura a TypeScript que siempre habrá un string ahí (lo cual es verdad)
+  const shortText = relativeText.split(' a las')[0]!
+
+  return shortText.replace(
+    'hoy',
+    new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  )
+}
 // Navegar al chat individual
 const openChat = (id: number) => {
   router.push({ name: 'chat-detail', params: { id } })
