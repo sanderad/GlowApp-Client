@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
 
+const authStore = useAuthStore()
 const router = useRouter()
 const email = ref('')
 const password = ref('')
 
-const handleLogin = () => {
+const handleLogin = async () => {
   // Aquí iría la lógica real con Firebase/Node
   // Por ahora simulamos que entra como usuario normal
-  router.push('/')
+  const result = await authStore.login(email.value, password.value)
+  if (result) {
+    window.location.href = '/'
+  }
 }
 </script>
 
@@ -61,11 +66,6 @@ const handleLogin = () => {
               class="bg-transparent w-full focus:outline-none text-sm font-medium text-gray-700"
             />
           </div>
-          <div class="text-right mt-2">
-            <a href="#" class="text-xs text-pink-600 font-bold hover:underline"
-              >¿Olvidaste tu contraseña?</a
-            >
-          </div>
         </div>
 
         <button
@@ -76,28 +76,7 @@ const handleLogin = () => {
         </button>
       </div>
 
-      <div class="relative flex py-8 items-center">
-        <div class="flex-grow border-t border-gray-100"></div>
-        <span class="flex-shrink-0 mx-4 text-xs text-gray-400 font-medium">O continúa con</span>
-        <div class="flex-grow border-t border-gray-100"></div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-4 mb-8">
-        <button
-          class="flex items-center justify-center gap-2 py-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition"
-        >
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" />
-          <span class="text-xs font-bold text-gray-600">Google</span>
-        </button>
-        <button
-          class="flex items-center justify-center gap-2 py-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition"
-        >
-          <i class="fa-brands fa-facebook text-blue-600 text-lg"></i>
-          <span class="text-xs font-bold text-gray-600">Facebook</span>
-        </button>
-      </div>
-
-      <div class="text-center space-y-3">
+      <div class="text-center space-y-3 pt-6">
         <p class="text-sm text-gray-500">
           ¿No tienes cuenta?
           <RouterLink to="/registro-cliente" class="text-pink-600 font-bold hover:underline"

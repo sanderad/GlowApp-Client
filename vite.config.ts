@@ -7,17 +7,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-    tailwindcss(),
-  ],
+  plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
-    allowedHosts: ['converted-cir-steven-senator.trycloudflare.com ']
-  }
+    allowedHosts: ['pension-marks-progress-composer.trycloudflare.com'],
+  },
 })

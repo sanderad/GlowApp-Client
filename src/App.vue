@@ -1,12 +1,37 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
+import { onMounted, watch } from 'vue'
 import BottomNav from '@/components/BottomNav.vue'
+import GlobalNotification from '@/components/GlobalNotification.vue'
+import { useAuthStore } from '@/stores/auth.store'
+import { useChatStore } from '@/stores/chat.store'
 
 const route = useRoute()
+const authStore = useAuthStore()
+const chatStore = useChatStore()
+
+onMounted(() => {
+  chatStore.connect()
+  chatStore.fetchChatsList()
+  authStore.getMe()
+})
+
+watch(
+  () => authStore.isAuthenticated,
+  (isAuth) => {
+    if (isAuth) {
+      chatStore.connect()
+      chatStore.fetchChatsList()
+    } else {
+      chatStore.disconnect()
+    }
+  },
+)
 </script>
 
 <template>
   <div class="bg-gray-50 min-h-screen font-sans pb-24 text-gray-800 relative overflow-x-hidden">
+    <GlobalNotification />
     <RouterView v-slot="{ Component }">
       <Transition name="fade-slide">
         <component :is="Component" :key="route.path" class="w-full absolute-during-transition" />

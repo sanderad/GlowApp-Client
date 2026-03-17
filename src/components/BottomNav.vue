@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { useChatStore } from '@/stores/chat.store'
+
+const chatStore = useChatStore()
 </script>
 
 <template>
@@ -54,11 +57,19 @@ import { RouterLink } from 'vue-router'
         active-class="text-pink-600"
       >
         <template #default="{ isActive }">
-          <div
-            class="p-1.5 mb-1 rounded-xl transition"
-            :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
-          >
-            <i class="fa-solid fa-comment text-lg"></i>
+          <div class="relative">
+            <div
+              class="p-1.5 mb-1 rounded-xl transition"
+              :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
+            >
+              <i class="fa-solid fa-comment text-lg"></i>
+            </div>
+            <div
+              v-if="chatStore.totalUnreadCount > 0"
+              class="absolute -top-1 -right-2 bg-pink-500 text-white text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border-2 border-white shadow-sm"
+            >
+              {{ chatStore.totalUnreadCount > 99 ? '99+' : chatStore.totalUnreadCount }}
+            </div>
           </div>
           <span
             class="text-[10px]"

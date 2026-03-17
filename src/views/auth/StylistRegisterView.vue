@@ -1,42 +1,201 @@
 <script setup lang="ts">
+import apiClient from '@/apiClient'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
+import { useNotificationStore } from '@/stores/notification.store'
+import type { StylistRegister } from '@/types/auth.types'
 
+const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
 const router = useRouter()
 const currentStep = ref(1)
 
+const isStep1Valid = computed(() => {
+  return (
+    stylistForm.value.fullName.trim() !== '' &&
+    stylistForm.value.email.trim() !== '' &&
+    stylistForm.value.password.trim() !== ''
+  )
+})
+
+const isStep2Valid = computed(() => {
+  return (
+    stylistForm.value.phone.trim() !== '' &&
+    stylistForm.value.businessName.trim() !== '' &&
+    stylistForm.value.category.trim() !== '' &&
+    stylistForm.value.bio.trim() !== '' &&
+    (stylistForm.value.photoUrl || '').trim() !== ''
+  )
+})
+
+const isStep3Valid = computed(() => {
+  return stylistForm.value.services.length > 0
+})
+
+const isStep4Valid = computed(() => {
+  return true // El portafolio no es obligatorio por ahora
+})
+
 // Datos del formulario
-const form = ref({
-// PASO 1: CUENTA
+const stylistForm = ref<StylistRegister>({
+  // PASO 1: CUENTA
   fullName: '', // Nombre real de la persona
   email: '',
   password: '',
+  phone: '',
 
-  name: '',
+  businessName: '',
   category: 'Uñas',
   bio: '',
   services: [
     { name: 'Uñas Acrílicas', duration: '2 horas', price: 85000 },
     { name: 'Semipermanente', duration: '45 min', price: 45000 },
   ],
+  portfolio: [],
+  yearsOfExperience: 1,
+  colorTheme: 'purple',
+  speciality: 'Profesional en Uñas',
+  photoUrl: '',
 })
+
+const fileInput = ref<HTMLInputElement | null>(null)
+const isUploading = ref(false)
+
+const profilePhotoInput = ref<HTMLInputElement | null>(null)
+const isUploadingProfilePhoto = ref(false)
+
+const triggerProfilePhotoInput = () => {
+  profilePhotoInput.value?.click()
+}
+
+const handleProfilePhotoUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+
+  if (!file) return
+
+  isUploadingProfilePhoto.value = true
+  const formData = new FormData()
+  formData.append('file', file)
+
+  try {
+    const { data } = await apiClient.post('/uploads/single', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    if (data.url) {
+      stylistForm.value.photoUrl = data.url
+    }
+  } catch (error) {
+    console.error('Error subiendo foto de perfil:', error)
+    alert('Hubo un error al subir la imagen de perfil.')
+  } finally {
+    isUploadingProfilePhoto.value = false
+    target.value = ''
+  }
+}
+
+const removeProfilePhoto = () => {
+  stylistForm.value.photoUrl = ''
+}
+
+// 1. Función "Control Remoto": Activa el click del input oculto
+const triggerFileInput = () => {
+  fileInput.value?.click()
+}
+
+const handlePortfolioUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const files = target.files // Obtenemos TODOS los archivos, no solo el [0]
+
+  if (!files || files.length === 0) return
+
+  // A. Validación: Máximo 5 fotos en total
+  if (stylistForm.value.portfolio.length + files.length > 5) {
+    alert('Solo puedes tener un máximo de 5 fotos en tu portafolio.')
+    target.value = '' // Limpiar selección
+    return
+  }
+
+  isUploading.value = true
+  const formData = new FormData()
+
+  // B. Agregar todos los archivos al FormData
+  // La clave 'files' debe coincidir con upload.array('files') del Backend
+  for (let i = 0; i < files.length; i++) {
+    const file = files.item(i)
+    if (file) formData.append('files', file)
+  }
+
+  try {
+    // C. Enviar al endpoint MÚLTIPLE
+    const { data } = await apiClient.post('/uploads/multiple', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    // D. El backend devuelve { urls: [...] }. Las agregamos al array.
+    if (data.urls) {
+      stylistForm.value.portfolio.push(...data.urls)
+    }
+  } catch (error) {
+    console.error('Error subiendo fotos:', error)
+    alert('Hubo un error al subir las imágenes.')
+  } finally {
+    isUploading.value = false
+    target.value = '' // Limpiamos el input para permitir subir más si quiere
+  }
+}
+
+// 4. ELIMINAR FOTO (Por si se arrepiente)
+const removePhoto = (index: number) => {
+  stylistForm.value.portfolio.splice(index, 1)
+}
+
+const isRegistering = ref(false)
+
+const finish = async (): Promise<boolean> => {
+  try {
+    isRegistering.value = true
+    // Enviamos todo el JSON gigante al endpoint de registro
+    console.log('finish')
+    const success = await authStore.registerStylist(stylistForm.value)
+    return success // Éxito
+  } catch (error: any) {
+    // Manejo de errores
+    notificationStore.showError(
+      error.message || 'Ocurrió un error inesperado al registrar el perfil.',
+    )
+    return false // Fallo
+  } finally {
+    isRegistering.value = false
+  }
+}
+
+const goToDashboard = () => {
+  window.location.href = '/'
+}
 
 // Estado para nuevo servicio
 const newService = ref({ name: '', price: '', duration: '' })
 
 // Funciones de navegación
-const nextStep = () => {
+const nextStep = async () => {
+  if (currentStep.value === 4) {
+    console.log('nextStep - attempt finish')
+    const success = await finish()
+    console.log('success', success)
+    if (!success) return // Detiene el avance si falla el registro
+  }
   if (currentStep.value < 5) currentStep.value++
 }
 const prevStep = () => {
   if (currentStep.value > 1) currentStep.value--
 }
-const finish = () => router.push('/') // Ir al dashboard/home
-
 // Lógica de Servicios
 const addService = () => {
   if (newService.value.name && newService.value.price) {
-    form.value.services.push({
+    stylistForm.value.services.push({
       name: newService.value.name,
       price: parseInt(newService.value.price),
       duration: newService.value.duration || 'N/A',
@@ -46,7 +205,7 @@ const addService = () => {
 }
 
 const removeService = (index: number) => {
-  form.value.services.splice(index, 1)
+  stylistForm.value.services.splice(index, 1)
 }
 </script>
 
@@ -64,60 +223,110 @@ const removeService = (index: number) => {
 
     <main class="max-w-md mx-auto px-6 pt-24">
       <div class="flex justify-between items-center mb-8 relative" v-if="currentStep < 5">
-            <div class="absolute left-0 top-1/2 w-full h-1 bg-gray-200 -z-10 rounded-full"></div>
-            
-            <div 
-              class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
-              :class="currentStep >= 1 ? 'bg-pink-600 text-white shadow-lg shadow-pink-200' : 'bg-gray-200 text-gray-500'"
-            >1</div>
-            
-            <div 
-              class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
-              :class="currentStep >= 2 ? 'bg-pink-600 text-white shadow-lg shadow-pink-200' : 'bg-gray-200 text-gray-500'"
-            >2</div>
-            
-            <div 
-              class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
-              :class="currentStep >= 3 ? 'bg-pink-600 text-white shadow-lg shadow-pink-200' : 'bg-gray-200 text-gray-500'"
-            >3</div>
+        <div class="absolute left-0 top-1/2 w-full h-1 bg-gray-200 -z-10 rounded-full"></div>
 
-            <div 
-              class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
-              :class="currentStep >= 4 ? 'bg-pink-600 text-white shadow-lg shadow-pink-200' : 'bg-gray-200 text-gray-500'"
-            >4</div>
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
+          :class="
+            currentStep >= 1
+              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              : 'bg-gray-200 text-gray-500'
+          "
+        >
+          1
         </div>
 
-    <div v-if="currentStep === 1" class="animate-fade-in">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-black text-gray-900 mb-2">Datos de Acceso 🔐</h2>
-                <p class="text-gray-500 text-sm">Primero, crea tus credenciales para administrar tu negocio.</p>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Nombre Completo (Tu nombre real)</label>
-                    <input v-model="form.fullName" type="text" placeholder="Ej: Laura Gómez" class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Correo Electrónico</label>
-                    <input v-model="form.email" type="email" placeholder="tucorreo@ejemplo.com" class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Contraseña</label>
-                    <input v-model="form.password" type="password" placeholder="••••••••" class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm">
-                </div>
-            </div>
-
-            <button @click="nextStep" class="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg mt-8 hover:bg-black transition">
-    Siguiente Paso <i class="fa-solid fa-arrow-right ml-2"></i>
-</button>
-            
-            <p class="text-center text-xs text-gray-400 mt-6">
-                Al continuar aceptas nuestros términos de uso para profesionales.
-            </p>
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
+          :class="
+            currentStep >= 2
+              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              : 'bg-gray-200 text-gray-500'
+          "
+        >
+          2
         </div>
+
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
+          :class="
+            currentStep >= 3
+              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              : 'bg-gray-200 text-gray-500'
+          "
+        >
+          3
+        </div>
+
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
+          :class="
+            currentStep >= 4
+              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              : 'bg-gray-200 text-gray-500'
+          "
+        >
+          4
+        </div>
+      </div>
+
+      <div v-if="currentStep === 1" class="animate-fade-in">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-black text-gray-900 mb-2">Datos de Acceso 🔐</h2>
+          <p class="text-gray-500 text-sm">
+            Primero, crea tus credenciales para administrar tu negocio.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1 ml-1"
+              >Nombre Completo (Tu nombre real)</label
+            >
+            <input
+              v-model="stylistForm.fullName"
+              type="text"
+              placeholder="Ej: Laura Gómez"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1 ml-1"
+              >Correo Electrónico</label
+            >
+            <input
+              v-model="stylistForm.email"
+              type="email"
+              placeholder="tucorreo@ejemplo.com"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Contraseña</label>
+            <input
+              v-model="stylistForm.password"
+              type="password"
+              placeholder="••••••••"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+            />
+          </div>
+        </div>
+
+        <button
+          @click="nextStep"
+          :disabled="!isStep1Valid"
+          class="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg mt-8 transition"
+          :class="!isStep1Valid ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black'"
+        >
+          Siguiente Paso <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+
+        <p class="text-center text-xs text-gray-400 mt-6">
+          Al continuar aceptas nuestros términos de uso para profesionales.
+        </p>
+      </div>
 
       <div v-if="currentStep === 2" class="animate-fade-in">
         <div class="text-center mb-6">
@@ -127,11 +336,40 @@ const removeService = (index: number) => {
 
         <div class="flex justify-center mb-6">
           <div
+            v-if="!stylistForm.photoUrl"
+            @click="triggerProfilePhotoInput"
             class="w-28 h-28 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-pink-50 hover:border-pink-300 hover:text-pink-500 transition relative"
           >
+            <div
+              v-if="isUploadingProfilePhoto"
+              class="absolute inset-0 bg-white/80 flex items-center justify-center rounded-full z-10"
+            >
+              <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-2xl"></i>
+            </div>
             <i class="fa-solid fa-camera text-2xl mb-1"></i>
             <span class="text-[10px] font-bold">Subir Foto</span>
           </div>
+
+          <div
+            v-else
+            class="w-28 h-28 rounded-full relative group shadow-sm border border-gray-100"
+          >
+            <img :src="stylistForm.photoUrl" class="w-full h-full object-cover rounded-full" />
+            <button
+              @click.stop="removeProfilePhoto"
+              class="absolute top-0 right-0 bg-black/50 hover:bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs transition z-20"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <input
+            type="file"
+            ref="profilePhotoInput"
+            class="hidden"
+            accept="image/*"
+            @change="handleProfilePhotoUpload"
+          />
         </div>
 
         <div class="space-y-4">
@@ -140,11 +378,41 @@ const removeService = (index: number) => {
               >Nombre Artístico / Negocio</label
             >
             <input
-              v-model="form.name"
+              v-model="stylistForm.businessName"
               type="text"
               placeholder="Ej: Ana María Nails"
               class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
             />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1 ml-1"
+              >Teléfono Celular (WhatsApp)</label
+            >
+            <div class="relative flex items-center">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 3 2"
+                  class="w-5 h-auto mr-1.5 rounded-[1px] shadow-sm"
+                >
+                  <path fill="#fcd116" d="M0 0h3v2H0z" />
+                  <path fill="#003893" d="M0 1h3v1H0z" />
+                  <path fill="#ce1126" d="M0 1.5h3v.5H0z" />
+                </svg>
+                <span class="text-sm font-bold text-gray-600 border-r border-gray-300 pr-2 mr-2"
+                  >+57</span
+                >
+              </div>
+              <input
+                v-model="stylistForm.phone"
+                @input="stylistForm.phone = stylistForm.phone.replace(/[\\s-]/g, '')"
+                type="tel"
+                placeholder="3001234567"
+                class="w-full bg-white border border-gray-200 p-3 pl-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              />
+            </div>
+            <p class="text-[10px] text-gray-400 mt-1.5 ml-1">Escríbelo sin espacios ni guiones.</p>
           </div>
 
           <div>
@@ -155,10 +423,10 @@ const removeService = (index: number) => {
               <button
                 v-for="cat in ['Uñas', 'Cabello', 'Barbería', 'Facial']"
                 :key="cat"
-                @click="form.category = cat"
+                @click="stylistForm.category = cat"
                 class="border py-3 rounded-xl text-xs transition font-bold"
                 :class="
-                  form.category === cat
+                  stylistForm.category === cat
                     ? 'border-pink-500 bg-pink-50 text-pink-600 shadow-sm'
                     : 'border-gray-200 bg-white text-gray-500'
                 "
@@ -171,7 +439,7 @@ const removeService = (index: number) => {
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Biografía Corta</label>
             <textarea
-              v-model="form.bio"
+              v-model="stylistForm.bio"
               rows="3"
               class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm resize-none"
               placeholder="Ej: Experta en acrilicas y diseño a mano alzada con 3 años de experiencia..."
@@ -180,16 +448,29 @@ const removeService = (index: number) => {
         </div>
 
         <div class="mt-6 mb-4 flex gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
-    <i class="fa-solid fa-lightbulb text-blue-500 mt-0.5"></i>
-    <p class="text-xs text-blue-700 leading-snug">
-        <strong>Tip:</strong> No te preocupes si no tienes la biografía perfecta ahora. Podrás editar todos estos datos más adelante desde tu perfil.
-    </p>
-</div>
+          <i class="fa-solid fa-lightbulb text-blue-500 mt-0.5"></i>
+          <p class="text-xs text-blue-700 leading-snug">
+            <strong>Tip:</strong> No te preocupes si no tienes la biografía perfecta ahora. Podrás
+            editar todos estos datos más adelante desde tu perfil.
+          </p>
+        </div>
 
-<div class="flex gap-3 mt-2">
-    <button @click="prevStep" class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl">Atrás</button>
-    <button @click="nextStep" class="w-2/3 bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg">Siguiente <i class="fa-solid fa-arrow-right ml-2"></i></button>
-</div>
+        <div class="flex gap-3 mt-2">
+          <button
+            @click="prevStep"
+            class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl"
+          >
+            Atrás
+          </button>
+          <button
+            @click="nextStep"
+            :disabled="!isStep2Valid"
+            class="w-2/3 bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg transition"
+            :class="!isStep2Valid ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black'"
+          >
+            Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
       </div>
 
       <div v-if="currentStep === 3" class="animate-fade-in">
@@ -200,7 +481,7 @@ const removeService = (index: number) => {
 
         <div class="space-y-3 mb-6">
           <div
-            v-for="(serv, index) in form.services"
+            v-for="(serv, index) in stylistForm.services"
             :key="index"
             class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center"
           >
@@ -252,16 +533,29 @@ const removeService = (index: number) => {
         </div>
 
         <div class="mt-6 mb-4 flex gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
-    <i class="fa-solid fa-clock text-blue-500 mt-0.5"></i>
-    <p class="text-xs text-blue-700 leading-snug">
-        <strong>¿Tienes prisa?</strong> Agrega solo tus servicios principales por ahora. Podrás añadir el resto de tu lista de precios con calma cuando quieras.
-    </p>
-</div>
+          <i class="fa-solid fa-clock text-blue-500 mt-0.5"></i>
+          <p class="text-xs text-blue-700 leading-snug">
+            <strong>¿Tienes prisa?</strong> Agrega solo tus servicios principales por ahora. Podrás
+            añadir el resto de tu lista de precios con calma cuando quieras.
+          </p>
+        </div>
 
-<div class="flex gap-3 mt-2">
-    <button @click="prevStep" class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl">Atrás</button>
-    <button @click="nextStep" class="w-2/3 bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg">Siguiente <i class="fa-solid fa-arrow-right ml-2"></i></button>
-</div>
+        <div class="flex gap-3 mt-2">
+          <button
+            @click="prevStep"
+            class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl"
+          >
+            Atrás
+          </button>
+          <button
+            @click="nextStep"
+            :disabled="!isStep3Valid"
+            class="w-2/3 bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg transition"
+            :class="!isStep3Valid ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black'"
+          >
+            Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
       </div>
 
       <div v-if="currentStep === 4" class="animate-fade-in">
@@ -271,15 +565,52 @@ const removeService = (index: number) => {
         </div>
 
         <div
-          class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-3xl p-8 text-center mb-6"
+          @click="triggerFileInput"
+          class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-3xl p-8 text-center mb-6 cursor-pointer hover:bg-pink-100 transition group relative"
         >
           <div
-            class="w-16 h-16 bg-white text-pink-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm"
+            v-if="isUploading"
+            class="absolute inset-0 bg-white/80 flex items-center justify-center rounded-3xl z-10"
+          >
+            <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-2xl"></i>
+          </div>
+
+          <div
+            class="w-16 h-16 bg-white text-pink-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:scale-110 transition"
           >
             <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
           </div>
           <h3 class="font-bold text-pink-900">Toca para subir fotos</h3>
-          <p class="text-xs text-pink-400 mt-1">Sporta JPG, PNG (Máx 5)</p>
+          <p class="text-xs text-pink-400 mt-1">Soporta JPG, PNG (Máx 5)</p>
+        </div>
+
+        <input
+          type="file"
+          ref="fileInput"
+          class="hidden"
+          multiple
+          accept="image/*"
+          @change="handlePortfolioUpload"
+        />
+
+        <div
+          v-if="stylistForm.portfolio.length > 0"
+          class="grid grid-cols-3 gap-3 mb-6 animate-fade-in"
+        >
+          <div
+            v-for="(url, index) in stylistForm.portfolio"
+            :key="index"
+            class="aspect-square rounded-xl overflow-hidden relative group shadow-sm border border-gray-100"
+          >
+            <img :src="url" class="w-full h-full object-cover" />
+
+            <button
+              @click.stop="removePhoto(index)"
+              class="absolute top-1 right-1 bg-black/50 hover:bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] transition"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
         </div>
 
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
@@ -303,25 +634,32 @@ const removeService = (index: number) => {
           </label>
         </div>
 
-<div class="mt-6 mb-4 flex gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
-    <i class="fa-solid fa-camera-rotate text-blue-500 mt-0.5"></i>
-    <p class="text-xs text-blue-700 leading-snug">
-        <strong>Tip:</strong> Puedes empezar con una sola foto. Después podrás subir más y organizar tu galería desde tu perfil.
-    </p>
-</div>
-        
+        <div class="mt-6 mb-4 flex gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
+          <i class="fa-solid fa-camera-rotate text-blue-500 mt-0.5"></i>
+          <p class="text-xs text-blue-700 leading-snug">
+            <strong>Tip:</strong> Puedes empezar con una sola foto. Después podrás subir más y
+            organizar tu galería desde tu perfil.
+          </p>
+        </div>
+
         <div class="flex gap-3 mt-4">
           <button
             @click="prevStep"
-            class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl"
+            :disabled="isRegistering"
+            class="w-1/3 bg-gray-200 text-gray-600 font-bold py-4 rounded-2xl disabled:opacity-50"
           >
             Atrás
           </button>
           <button
             @click="nextStep"
-            class="w-2/3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-4 rounded-2xl shadow-lg"
+            :disabled="!isStep4Valid || isRegistering"
+            class="w-2/3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-4 rounded-2xl shadow-lg transition flex items-center justify-center relative"
+            :class="
+              !isStep4Valid || isRegistering ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+            "
           >
-            ¡Publicar Perfil! 🚀
+            <span :class="{ 'opacity-0': isRegistering }">¡Publicar Perfil! 🚀</span>
+            <i v-if="isRegistering" class="fa-solid fa-circle-notch fa-spin absolute text-xl"></i>
           </button>
         </div>
       </div>
@@ -361,7 +699,7 @@ const removeService = (index: number) => {
         </div>
 
         <button
-          @click="finish"
+          @click="goToDashboard"
           class="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-black transition"
         >
           Ir a mi Panel
