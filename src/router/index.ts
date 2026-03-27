@@ -109,4 +109,20 @@ const router = createRouter({
   },
 })
 
+const publicRoutes = [RN.LOGIN, RN.CLIENT_REGISTER, RN.STYLIST_REGISTER]
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  
+  // Evitar bucles infinitos y proteger rutas privadas
+  if (!publicRoutes.includes(to.name as any) && !authStore.isAuthenticated) {
+    next({ name: RN.LOGIN })
+  } else if (publicRoutes.includes(to.name as any) && authStore.isAuthenticated) {
+    // Si ya está logueado y trata de ir al login o registro, lo mandamos al home
+    next({ name: RN.HOME })
+  } else {
+    next() // Permitir navegación
+  }
+})
+
 export default router
