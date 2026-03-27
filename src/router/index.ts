@@ -109,11 +109,11 @@ const router = createRouter({
   },
 })
 
-const publicRoutes = [RN.LOGIN, RN.CLIENT_REGISTER, RN.STYLIST_REGISTER]
+const publicRoutes = [RN.LOGIN, RN.CLIENT_REGISTER, RN.STYLIST_REGISTER, RN.HOME]
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  
+
   // Evitar bucles infinitos y proteger rutas privadas
   if (!publicRoutes.includes(to.name as any) && !authStore.isAuthenticated) {
     next({ name: RN.LOGIN })
