@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
+import RN from '@/router/routeNames'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -13,7 +14,7 @@ const handleLogin = async () => {
   // Por ahora simulamos que entra como usuario normal
   const result = await authStore.login(email.value, password.value)
   if (result) {
-    window.location.href = '/'
+    router.push({ name: RN.HOME })
   }
 }
 </script>
