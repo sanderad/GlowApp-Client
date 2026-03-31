@@ -10,10 +10,19 @@ const route = useRoute()
 const authStore = useAuthStore()
 const chatStore = useChatStore()
 
-onMounted(() => {
-  chatStore.connect()
-  chatStore.fetchChatsList()
-  authStore.getMe()
+onMounted(async () => {
+  // 1. Esperamos a que el authStore verifique la sesión
+  const isAuthenticated = await authStore.getMe()
+
+  // 2. Si la sesión es válida (true), conectamos sockets y chats
+  if (isAuthenticated) {
+    chatStore.connect()
+    chatStore.fetchChatsList()
+  } else {
+    // 3. Opcional: Si tienes una variable global de "Cargando App",
+    // asegúrate de apagarla aquí.
+    // appStore.isLoadingGlobal = false;
+  }
 })
 
 watch(
