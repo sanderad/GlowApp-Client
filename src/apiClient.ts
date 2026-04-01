@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from 'axios'
 import router from './router'
 import RN from './router/routeNames'
+import { useAuthStore } from './stores/auth.store'
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 
@@ -20,16 +21,16 @@ apiClient.interceptors.response.use(
       console.error('Received final 401 from backend.')
 
       try {
-        // TODO: Implement auth store, login and logout
-        // const authStore = useAuthStore()
-        // authStore.logout()
+        const authStore = useAuthStore()
+        authStore.logout() // Critical to prevent router guard infinite loop
       } catch (error) {
         console.error('Failed to get auth store or call logout:', error)
-        if (router.currentRoute.value.name !== RN.LOGIN) {
-          router.push({ name: RN.LOGIN })
-        }
       }
-      return new Promise(() => {})
+      
+      if (router.currentRoute.value.name !== RN.LOGIN) {
+        router.push({ name: RN.LOGIN })
+      }
+      return Promise.reject(error) // Always reject the promise to prevent hanging UI
     }
 
     return Promise.reject(error)
