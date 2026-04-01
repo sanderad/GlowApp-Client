@@ -109,8 +109,9 @@ const router = createRouter({
   },
 })
 
-const publicRoutes = [RN.LOGIN, RN.CLIENT_REGISTER, RN.STYLIST_REGISTER, RN.HOME]
+// const publicRoutes = [RN.LOGIN, RN.CLIENT_REGISTER, RN.STYLIST_REGISTER, RN.HOME]
 
+/*
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
@@ -124,5 +125,6 @@ router.beforeEach((to, from, next) => {
     next() // Permitir navegación
   }
 })
+*/
 
 export default router
