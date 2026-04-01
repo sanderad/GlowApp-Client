@@ -111,9 +111,7 @@ export const useStylistStore = defineStore('stylist', () => {
     try {
       isLoadingStylistDetailed.value = true
 
-      const response = await apiClient.get<StylistDetailed>(
-        `http://localhost:5000/stylists/detailed/${userId}`,
-      )
+      const response = await apiClient.get<StylistDetailed>(`/stylists/detailed/${userId}`)
       if (response.status === 401 || response.status === 500)
         throw new Error('Error cargando estilista')
 
