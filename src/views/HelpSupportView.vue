@@ -7,7 +7,7 @@ const faqs = [
   {
     question: '¿Cómo agendo una cita?',
     answer:
-      'Busca a tu estilista favorito, entra a su perfil y envíale un mensaje directo por el chat de GlowApp para acordar la fecha y hora del servicio.',
+      'Busca a tu estilista favorito, entra a su perfil y envíale un mensaje directo por el chat de GlowYou para acordar la fecha y hora del servicio.',
   },
   {
     question: '¿Cómo sé el precio de un servicio?',
@@ -17,7 +17,7 @@ const faqs = [
   {
     question: '¿Cómo se manejan los pagos?',
     answer:
-      'GlowApp solo te conecta con el profesional. El pago se realiza directamente con el estilista en su local o por el método que acuerden por chat.',
+      'GlowYou solo te conecta con el profesional. El pago se realiza directamente con el estilista en su local o por el método que acuerden por chat.',
   },
 ]
 </script>
@@ -46,7 +46,7 @@ const faqs = [
         </div>
         <h2 class="font-black text-lg text-gray-900 mb-1">¿Necesitas ayuda humana?</h2>
         <p class="text-xs text-gray-500 mb-4 px-4">
-          Hola, soy Dulfary, dueña de GlowApp. Estoy disponible para ayudarte si tienes dudas o
+          Hola, soy Dulfary, dueña de GlowYou. Estoy disponible para ayudarte si tienes dudas o
           inconvenientes.
         </p>
 

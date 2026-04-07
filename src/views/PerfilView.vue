@@ -166,7 +166,7 @@ const handlePhotoUpload = async (event: Event) => {
           Tu perfil público y chats están desactivados porque tu suscripción ha vencido.
         </p>
         <a
-          :href="`https://wa.me/573128285881?text=${encodeURIComponent('Hola Dulfary, quiero renovar mi cuenta en GlowApp. Mi nombre es ' + (authStore.me?.fullName || ''))}`"
+          :href="`https://wa.me/573128285881?text=${encodeURIComponent('Hola Dulfary, quiero renovar mi cuenta en GlowYou. Mi nombre es ' + (authStore.me?.fullName || ''))}`"
           target="_blank"
           class="inline-flex items-center gap-2 bg-red-500 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-red-200 hover:bg-red-600 transition text-xs"
         >
@@ -295,7 +295,7 @@ const handlePhotoUpload = async (event: Event) => {
       </button>
 
       <p class="text-center text-[10px] text-gray-400 mt-6 pb-4 font-medium">
-        GlowApp v1.0.0 • Hecho con ❤️ en Cali
+        GlowYou v1.0.0 • Hecho con ❤️ en Cali
       </p>
     </main>
   </div>

@@ -33,7 +33,7 @@ const handleLogin = async () => {
         <h1
           class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 tracking-tighter mb-2"
         >
-          GlowApp
+          GlowYou
         </h1>
         <p class="text-gray-400 text-sm">Tu belleza, a un clic de distancia.</p>
       </div>

@@ -627,7 +627,7 @@ const removeService = (index: number) => {
             </div>
             <p class="text-xs text-gray-500 leading-snug select-none">
               Declaro que soy el autor original de estas fotos y libero a
-              <span class="font-bold text-gray-700">GlowApp</span> de cualquier reclamo por derechos
+              <span class="font-bold text-gray-700">GlowYou</span> de cualquier reclamo por derechos
               de autor.
               <a href="#" class="text-pink-600 underline">Leer términos legales.</a>
             </p>

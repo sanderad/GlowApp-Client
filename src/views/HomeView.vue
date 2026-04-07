@@ -42,7 +42,7 @@ watch(localSearchQuery, (newValue) => {
         <h1
           class="text-xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
         >
-          GlowApp
+          GlowYou
         </h1>
         <div
           class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"

@@ -69,7 +69,7 @@ const openChat = (id: number) => {
             con la administradora para renovarla.
           </p>
           <a
-            :href="`https://wa.me/573128285881?text=${encodeURIComponent('Hola Dulfary, quiero renovar mi cuenta en GlowApp. Mi nombre es ' + (authStore.me?.fullName || ''))}`"
+            :href="`https://wa.me/573128285881?text=${encodeURIComponent('Hola Dulfary, quiero renovar mi cuenta en GlowYou. Mi nombre es ' + (authStore.me?.fullName || ''))}`"
             target="_blank"
             class="inline-flex items-center gap-2 bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-green-200 hover:bg-green-600 transition"
           >

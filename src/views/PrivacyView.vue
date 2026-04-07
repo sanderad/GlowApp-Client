@@ -75,7 +75,7 @@ const router = useRouter()
       </section>
 
       <p class="text-center text-[10px] text-gray-400 mt-6 pb-6">
-        GlowApp Inc. 2026 - Todos los derechos reservados.
+        GlowYou Inc. 2026 - Todos los derechos reservados.
       </p>
     </main>
   </div>
