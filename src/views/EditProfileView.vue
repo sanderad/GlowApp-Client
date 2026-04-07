@@ -347,6 +347,7 @@ const saveChanges = async () => {
                 <option value="Cabello">Cabello</option>
                 <option value="Barbería">Barbería</option>
                 <option value="Facial">Facial</option>
+                <option value="Corporal">Corporal</option>
                 <option value="Maquillaje">Maquillaje</option>
               </select>
             </div>

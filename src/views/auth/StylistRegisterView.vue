@@ -421,7 +421,7 @@ const removeService = (index: number) => {
             >
             <div class="grid grid-cols-2 gap-3">
               <button
-                v-for="cat in ['Uñas', 'Cabello', 'Barbería', 'Facial']"
+                v-for="cat in ['Uñas', 'Cabello', 'Barbería', 'Facial', 'Corporal', 'Maquillaje']"
                 :key="cat"
                 @click="stylistForm.category = cat"
                 class="border py-3 rounded-xl text-xs transition font-bold"

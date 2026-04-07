@@ -115,6 +115,12 @@ watch(localSearchQuery, (newValue) => {
               'text-orange-500':
                 cat.name === stylistStore.selectedCategory &&
                 stylistStore.selectedCategory === 'Facial',
+              'text-green-500':
+                cat.name === stylistStore.selectedCategory &&
+                stylistStore.selectedCategory === 'Corporal',
+              'text-fuchsia-500':
+                cat.name === stylistStore.selectedCategory &&
+                stylistStore.selectedCategory === 'Maquillaje',
               'text-blue-500':
                 cat.name === stylistStore.selectedCategory &&
                 stylistStore.selectedCategory === 'Barbería',

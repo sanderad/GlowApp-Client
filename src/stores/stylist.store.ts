@@ -33,6 +33,20 @@ export const useStylistStore = defineStore('stylist', () => {
       gradient: 'from-cyan-500 to-blue-600',
       shadow: 'shadow-cyan-200',
     },
+    {
+      id: 5,
+      name: 'Corporal',
+      icon: 'fa-leaf',
+      gradient: 'from-emerald-400 to-green-500',
+      shadow: 'shadow-green-200',
+    },
+    {
+      id: 6,
+      name: 'Maquillaje',
+      icon: 'fa-eye',
+      gradient: 'from-fuchsia-400 to-pink-500',
+      shadow: 'shadow-fuchsia-200',
+    },
   ])
 
   const stylists = ref<Stylist[]>([])
