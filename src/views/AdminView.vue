@@ -119,21 +119,33 @@ const logout = () => {
     router.push({ name: RN.LOGIN })
   }
 }
+
+const goToProfile = () => {
+  router.push({ name: RN.PERFIL })
+}
 </script>
 
 <template>
   <div class="bg-gray-100 text-gray-800 font-sans min-h-screen pb-20">
     <nav class="bg-gray-900 text-white pt-8 pb-16 px-6 rounded-b-[2.5rem] shadow-2xl relative z-10">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <span class="text-xs font-bold text-gray-400 uppercase tracking-widest"
-            >Modo Administrador</span
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+          <button
+            @click="goToProfile"
+            class="w-10 h-10 shrink-0 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700 shadow-inner hover:bg-gray-700 transition cursor-pointer"
           >
-          <h1 class="text-2xl font-black">Hola, Dulfary 👋</h1>
+            <i class="fa-solid fa-arrow-left text-white text-sm"></i>
+          </button>
+          <div>
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest"
+              >Modo Administrador</span
+            >
+            <h1 class="text-xl font-black truncate max-w-[150px]">Hola, Dulfary 👋</h1>
+          </div>
         </div>
         <button
           @click="logout"
-          class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700 shadow-inner hover:bg-gray-700 transition cursor-pointer"
+          class="w-10 h-10 shrink-0 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700 shadow-inner hover:bg-gray-700 transition cursor-pointer"
         >
           <i class="fa-solid fa-power-off text-red-400 text-sm"></i>
         </button>

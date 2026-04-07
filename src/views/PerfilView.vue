@@ -98,11 +98,6 @@ const handlePhotoUpload = async (event: Event) => {
     >
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-white font-bold text-xl">Mi Perfil</h1>
-        <button
-          class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition"
-        >
-          <i class="fa-solid fa-gear text-lg"></i>
-        </button>
       </div>
 
       <div class="flex flex-col items-center">
