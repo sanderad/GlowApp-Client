@@ -114,6 +114,12 @@ const handlePhotoUpload = async (event: Event) => {
         >
           Cuenta Profesional
         </span>
+        <span
+          v-if="isAdmin"
+          class="mt-2 bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-white/30"
+        >
+          Cuenta Administrador
+        </span>
       </div>
     </div>
 
