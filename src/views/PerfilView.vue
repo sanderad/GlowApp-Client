@@ -27,11 +27,9 @@ const userProfile = computed(() => {
   }
 })
 
-const isStylist = computed(
-  () =>
-    userProfile.value.role?.toLowerCase() === 'stylist' ||
-    userProfile.value.role?.toLowerCase() === 'admin',
-)
+const isStylist = computed(() => userProfile.value.role?.toLowerCase() === 'stylist')
+
+const isAdmin = computed(() => userProfile.value.role?.toLowerCase() === 'admin')
 
 const isAccountExpired = computed(
   () =>
@@ -48,6 +46,10 @@ const logout = () => {
 
 const goToEdit = () => {
   router.push('/perfil/editar')
+}
+
+const goToAdmin = () => {
+  router.push('/admin')
 }
 
 const goToPublicProfile = () => {
@@ -206,6 +208,27 @@ const handlePhotoUpload = async (event: Event) => {
           <div class="flex-1 text-left">
             <h3 class="font-bold text-white text-sm">Ver Mi Perfil Público</h3>
             <p class="text-xs text-gray-400">Así te ven los clientes</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Panel de Administración (Solo Admin) -->
+      <div
+        v-if="isAdmin"
+        class="bg-gradient-to-r from-gray-900 to-black rounded-2xl p-2 shadow-lg mb-4 text-white"
+      >
+        <button
+          @click="goToAdmin"
+          class="w-full flex items-center p-3 hover:bg-white/10 rounded-xl transition group"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mr-4 group-hover:bg-blue-500/30 transition border border-blue-500/20"
+          >
+            <i class="fa-solid fa-user-pen"></i>
+          </div>
+          <div class="flex-1 text-left">
+            <h3 class="font-bold text-white text-sm">Administrar Perfiles</h3>
           </div>
           <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
         </button>
