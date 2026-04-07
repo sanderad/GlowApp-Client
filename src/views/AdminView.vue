@@ -140,7 +140,7 @@ const goToProfile = () => {
             <span class="text-xs font-bold text-gray-400 uppercase tracking-widest"
               >Modo Administrador</span
             >
-            <h1 class="text-xl font-black truncate max-w-[150px]">Hola, Dulfary 👋</h1>
+            <h1 class="text-xl font-black max-w-[250px]">Hola, Dulfary 👋</h1>
           </div>
         </div>
         <button
