@@ -35,7 +35,7 @@ const handleLogin = async () => {
         >
           GlowYou
         </h1>
-        <p class="text-gray-400 text-sm">Tu belleza, a un clic de distancia.</p>
+        <p class="text-gray-400 text-sm">Tus servicios de belleza, a un clic de distancia.</p>
       </div>
 
       <div class="space-y-4">
@@ -79,16 +79,16 @@ const handleLogin = async () => {
 
       <div class="text-center space-y-3 pt-6">
         <p class="text-sm text-gray-500">
-          ¿No tienes cuenta?
+          ¿Buscas servicios de belleza?
           <RouterLink to="/registro-cliente" class="text-pink-600 font-bold hover:underline"
-            >Regístrate aquí</RouterLink
+            >Adquierelos aquí como cliente</RouterLink
           >
         </p>
         <div class="inline-block bg-purple-50 px-4 py-2 rounded-full">
           <p class="text-xs text-purple-600 font-medium">
-            ¿Eres estilista?
+            ¿Eres profesional?
             <RouterLink to="/registro-estilista" class="font-bold underline ml-1"
-              >Crea tu perfil profesional</RouterLink
+              >Crea tu perfil como profesional de la belleza</RouterLink
             >
           </p>
         </div>
