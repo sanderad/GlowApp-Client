@@ -116,6 +116,7 @@ router.beforeEach((to, from, next) => {
 
   // Evitar bucles infinitos y proteger rutas privadas
   if (!publicRoutes.includes(to.name as any) && !authStore.isAuthenticated) {
+    console.log('not authenticated')
     next({ name: RN.LOGIN })
   } else if (publicRoutes.includes(to.name as any) && authStore.isAuthenticated) {
     // Si ya está logueado y trata de ir al login o registro, lo mandamos al home

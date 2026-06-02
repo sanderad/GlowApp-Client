@@ -1,29 +1,18 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
-import { onMounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import BottomNav from '@/components/BottomNav.vue'
 import GlobalNotification from '@/components/GlobalNotification.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useChatStore } from '@/stores/chat.store'
+import router from './router'
+import { Preferences } from '@capacitor/preferences'
+import RN from './router/routeNames'
 
 const route = useRoute()
 const authStore = useAuthStore()
 const chatStore = useChatStore()
 
-onMounted(async () => {
-  // 1. Esperamos a que el authStore verifique la sesión
-  const isAuthenticated = await authStore.getMe()
-
-  // 2. Si la sesión es válida (true), conectamos sockets y chats
-  if (isAuthenticated) {
-    chatStore.connect()
-    chatStore.fetchChatsList()
-  } else {
-    // 3. Opcional: Si tienes una variable global de "Cargando App",
-    // asegúrate de apagarla aquí.
-    // appStore.isLoadingGlobal = false;
-  }
-})
 
 watch(
   () => authStore.isAuthenticated,
@@ -36,6 +25,35 @@ watch(
     }
   },
 )
+
+const handleBack = (event: PopStateEvent) => {
+  event.preventDefault()
+  router.back()
+}
+
+onMounted(async () => {
+  const { value: token } = await Preferences.get({key: 'auth_token'})
+  if (token) {
+    authStore.token = token
+
+    try {
+      await authStore.getMe()
+      
+    } catch (error) {
+      console.error('Error al obtener el usuario en onMounted:', error)
+      await Preferences.remove({key: 'auth_token'})
+      authStore.logout()
+      router.push({ name: RN.LOGIN })
+    }
+  }
+
+  window.addEventListener('popstate', handleBack)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('popstate', handleBack)
+})
+
 </script>
 
 <template>

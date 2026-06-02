@@ -17,6 +17,9 @@
     "kill": "kill $(lsof -t -i:5173)"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@capacitor/preferences": "^8.0.1",
     "@tailwindcss/vite": "4.1.18",
     "axios": "1.13.2",
     "cloudinary": "^1.41.3",
@@ -28,6 +31,7 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.0",
     "@tsconfig/node24": "24.0.3",
     "@types/node": "24.10.4",
     "@vitejs/plugin-vue": "6.0.3",

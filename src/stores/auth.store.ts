@@ -3,12 +3,20 @@ import apiClient from '@/apiClient'
 import { ref } from 'vue'
 import type { ClientRegister, StylistRegister } from '@/types/auth.types'
 import type { User } from '@/types/stylist.types'
+import { Preferences } from '@capacitor/preferences'
+
+interface LoginRes {
+  token: string
+  user: User
+}
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
   const user = ref<any>(null)
   const token = ref<string>('')
   const me = ref<User | null>(null)
+  const errLoginMsg = ref('')
+
 
   // REHYDRATION INICIAL
   const storedToken = localStorage.getItem('token')
@@ -47,9 +55,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(email: string, password: string): Promise<boolean> {
     try {
-      const response = await apiClient.post('/auth/login', { email, password })
+      const response = await apiClient.post<LoginRes>('/auth/login', { email, password })
       if (response.status === 401 || response.status === 500)
-        throw new Error('Error al iniciar sesión')
+        throw new Error('Error al iniciar sesión 2')
+
+      const token  = response.data.token
+
+      await Preferences.set({
+        key: 'auth_token',
+        value: token
+      })
 
       const data = response.data
       extractUserFromData(data)
@@ -57,6 +72,8 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     } catch (error) {
       console.error(error)
+      const errorMessage = (error as any).response?.data?.message || 'Error al iniciar sesión';
+      errLoginMsg.value = errorMessage
       return false
     }
   }
@@ -101,6 +118,7 @@ export const useAuthStore = defineStore('auth', () => {
         throw new Error('Error al obtener usuario')
 
       me.value = response.data
+      isAuthenticated.value = true
       console.log(me.value)
       return true
     } catch (error) {
@@ -159,5 +177,6 @@ export const useAuthStore = defineStore('auth', () => {
     updateUser,
     updateStylistProfile,
     me,
+    errLoginMsg
   }
 })

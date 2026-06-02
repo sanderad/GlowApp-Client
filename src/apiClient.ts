@@ -2,16 +2,28 @@ import axios, { type AxiosError } from 'axios'
 import router from './router'
 import RN from './router/routeNames'
 import { useAuthStore } from './stores/auth.store'
+import { Preferences } from '@capacitor/preferences'
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
+})
+
+apiClient.interceptors.request.use(async (config) => {
+  const {value: token} = await Preferences.get({key: 'auth_token'})
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+
+  return config
+}, (error) => {
+  return Promise.reject(error)
 })
 
 apiClient.interceptors.response.use(

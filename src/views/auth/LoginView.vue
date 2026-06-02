@@ -35,7 +35,8 @@ const handleLogin = async () => {
         >
           GlowYou
         </h1>
-        <p class="text-gray-400 text-sm">Tus servicios de belleza, a un clic de distancia.</p>
+        <p class="text-gray-400 text-sm">Tus servicios de belleza, a un clic de distancia... hola</p>
+        <p v-if="authStore.errLoginMsg" class="text-red-500 text-sm mt-2">{{ authStore.errLoginMsg }}</p>
       </div>
 
       <div class="space-y-4">
