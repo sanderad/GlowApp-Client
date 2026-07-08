@@ -94,7 +94,7 @@ const handlePhotoUpload = async (event: Event) => {
 <template>
   <div class="bg-gray-50 min-h-screen pb-24">
     <div
-      class="relative bg-linear-to-r from-pink-500 via-purple-500 to-indigo-600 pb-24 pt-6 px-6 rounded-b-[3rem] shadow-lg shadow-purple-200"
+      class="relative bg-black pb-24 pt-6 px-6 rounded-b-[3rem] shadow-lg shadow-gray-200"
     >
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-white font-bold text-xl">Mi Perfil</h1>

@@ -8,6 +8,7 @@ import { useChatStore } from '@/stores/chat.store'
 import router from './router'
 import { Preferences } from '@capacitor/preferences'
 import RN from './router/routeNames'
+import { StatusBar, Style } from '@capacitor/status-bar'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -31,10 +32,22 @@ const handleBack = (event: PopStateEvent) => {
   router.back()
 }
 
+const setTopBarColor = async () => {
+  try {
+    await StatusBar.setBackgroundColor({color: '#ffffff'})
+
+    await StatusBar.setStyle({style: Style.Light})
+  } catch (error) {
+    console.error('StatusBar is not available on web:', error);
+  }
+}
+
 onMounted(async () => {
+  // setTopBarColor()
   const { value: token } = await Preferences.get({key: 'auth_token'})
   if (token) {
     authStore.token = token
+
 
     try {
       await authStore.getMe()

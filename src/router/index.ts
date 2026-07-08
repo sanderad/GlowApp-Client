@@ -5,6 +5,7 @@ import EditProfileView from '../views/EditProfileView.vue'
 import HelpSupportView from '../views/HelpSupportView.vue'
 import PrivacyView from '../views/PrivacyView.vue'
 import { useAuthStore } from '../stores/auth.store'
+import {StatusBar, Style} from '@capacitor/status-bar'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,83 +14,83 @@ const router = createRouter({
       path: '/',
       name: RN.HOME,
       component: HomeView,
-      meta: { showBottomNav: true },
+      meta: { showBottomNav: true, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/favoritos',
       name: RN.FAVORITOS,
       // Lazy loading: solo se carga cuando se visita
       component: () => import('../views/FavoritosView.vue'),
-      meta: { showBottomNav: true },
+      meta: { showBottomNav: true, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/chats',
       name: RN.CHATS,
       component: () => import('../views/ChatsView.vue'),
-      meta: { showBottomNav: true },
+      meta: { showBottomNav: true, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/perfil',
       name: RN.PERFIL,
       component: () => import('../views/PerfilView.vue'),
-      meta: { showBottomNav: true },
+      meta: { showBottomNav: true, statusBarColor: '#432dd7', statusBarStyle: 'DARK' },
     },
     {
       path: '/perfil/editar',
       name: 'edit-profile',
       component: EditProfileView,
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/perfil/ayuda',
       name: 'help-support',
       component: HelpSupportView,
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/perfil/privacidad',
       name: 'privacy',
       component: PrivacyView,
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/estilista/:id', // :id es el parámetro dinámico
       name: RN.STYLIST_DETAIL,
       component: () => import('../views/StylistDetailView.vue'),
-      meta: { showBottomNav: false }, // Ocultamos la barra de abajo para dar foco
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' }, // Ocultamos la barra de abajo para dar foco
     },
     {
       path: '/chat/:id',
       name: RN.CHAT_DETAIL,
       component: () => import('../views/ChatDetailView.vue'),
-      meta: { showBottomNav: false }, // Ocultamos la nav principal para dar foco al teclado
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' }, // Ocultamos la nav principal para dar foco al teclado
     },
     // LOGIN
     {
       path: '/login',
       name: RN.LOGIN,
       component: () => import('../views/auth/LoginView.vue'),
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     // REGISTRO CLIENTE (Usuario normal)
     {
       path: '/registro-cliente',
       name: RN.CLIENT_REGISTER,
       component: () => import('../views/auth/ClientRegisterView.vue'),
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     // REGISTRO ESTILISTA (Tu código adaptado)
     {
       path: '/registro-estilista',
       name: RN.STYLIST_REGISTER,
       component: () => import('../views/auth/StylistRegisterView.vue'),
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
     },
     {
       path: '/admin',
       name: RN.ADMIN_DASHBOARD,
       component: () => import('../views/AdminView.vue'),
-      meta: { showBottomNav: false },
+      meta: { showBottomNav: false, statusBarColor: '#000000', statusBarStyle: 'DARK' },
       beforeEnter: async (to, from, next) => {
         const authStore = useAuthStore()
         await authStore.getMe()
@@ -124,6 +125,10 @@ router.beforeEach((to, from, next) => {
   } else {
     next() // Permitir navegación
   }
+})
+
+router.afterEach((to) => {
+  
 })
 
 export default router
