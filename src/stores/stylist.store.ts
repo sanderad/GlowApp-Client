@@ -9,15 +9,15 @@ export const useStylistStore = defineStore('stylist', () => {
       id: 1,
       name: 'Cabello',
       icon: 'fa-scissors',
-      gradient: 'from-pink-500 to-rose-600',
-      shadow: 'shadow-pink-200',
+      gradient: 'from-gray-900 to-black',
+      shadow: 'shadow-gray-200',
     },
     {
       id: 2,
       name: 'Uñas',
       icon: 'fa-hand-sparkles',
-      gradient: 'from-purple-500 to-indigo-600',
-      shadow: 'shadow-purple-200',
+      gradient: 'from-gray-800 to-gray-900',
+      shadow: 'shadow-gray-200',
     },
     {
       id: 3,
@@ -44,8 +44,8 @@ export const useStylistStore = defineStore('stylist', () => {
       id: 6,
       name: 'Maquillaje',
       icon: 'fa-eye',
-      gradient: 'from-fuchsia-400 to-pink-500',
-      shadow: 'shadow-fuchsia-200',
+      gradient: 'from-gray-700 to-gray-800',
+      shadow: 'shadow-gray-200',
     },
   ])
 

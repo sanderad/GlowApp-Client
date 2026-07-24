@@ -40,7 +40,7 @@ const faqs = [
       <!-- Contacto Directo -->
       <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center">
         <div
-          class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-3 text-pink-500"
+          class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 text-black"
         >
           <i class="fa-solid fa-headset text-3xl"></i>
         </div>

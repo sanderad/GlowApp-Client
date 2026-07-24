@@ -20,75 +20,75 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white flex flex-col justify-center px-6 relative overflow-hidden">
+  <div class="relative flex flex-col justify-center bg-white px-6 min-h-screen overflow-hidden">
     <div
-      class="absolute -top-10 -right-10 w-64 h-64 bg-pink-500 rounded-full opacity-5 blur-3xl"
+      class="-top-10 -right-10 absolute bg-black opacity-5 blur-3xl rounded-full w-64 h-64"
     ></div>
     <div
-      class="absolute -bottom-10 -left-10 w-64 h-64 bg-purple-500 rounded-full opacity-5 blur-3xl"
+      class="-bottom-10 -left-10 absolute bg-black opacity-5 blur-3xl rounded-full w-64 h-64"
     ></div>
 
-    <div class="relative z-10">
-      <div class="text-center mb-10">
+    <div class="z-10 relative">
+      <div class="mb-10 text-center">
         <h1
-          class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 tracking-tighter mb-2"
+          class="mb-2 font-black text-black text-4xl tracking-tighter"
         >
           GlowYou
         </h1>
-        <p class="text-gray-400 text-sm">Tus servicios de belleza, a un clic de distancia... hola</p>
-        <p v-if="authStore.errLoginMsg" class="text-red-500 text-sm mt-2">{{ authStore.errLoginMsg }}</p>
+        <p class="text-gray-400 text-sm">Tus servicios de belleza, a un clic de distancia...</p>
+        <p v-if="authStore.errLoginMsg" class="mt-2 text-red-500 text-sm">{{ authStore.errLoginMsg }}</p>
       </div>
 
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Correo Electrónico</label>
+          <label class="block mb-1 ml-1 font-bold text-gray-700 text-xs">Correo Electrónico</label>
           <div
-            class="flex items-center bg-gray-50 rounded-xl px-4 py-3 border border-gray-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 transition"
+            class="flex items-center bg-gray-50 px-4 py-3 border border-gray-100 focus-within:border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-black transition"
           >
-            <i class="fa-regular fa-envelope text-gray-400 mr-3"></i>
+            <i class="mr-3 text-gray-400 fa-regular fa-envelope"></i>
             <input
               v-model="email"
               type="email"
               placeholder="hola@ejemplo.com"
-              class="bg-transparent w-full focus:outline-none text-sm font-medium text-gray-700"
+              class="bg-transparent focus:outline-none w-full font-medium text-gray-700 text-sm"
             />
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1 ml-1">Contraseña</label>
+          <label class="block mb-1 ml-1 font-bold text-gray-700 text-xs">Contraseña</label>
           <div
-            class="flex items-center bg-gray-50 rounded-xl px-4 py-3 border border-gray-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 transition"
+            class="flex items-center bg-gray-50 px-4 py-3 border border-gray-100 focus-within:border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-black transition"
           >
-            <i class="fa-solid fa-lock text-gray-400 mr-3"></i>
+            <i class="mr-3 text-gray-400 fa-solid fa-lock"></i>
             <input
               v-model="password"
               type="password"
               placeholder="••••••••"
-              class="bg-transparent w-full focus:outline-none text-sm font-medium text-gray-700"
+              class="bg-transparent focus:outline-none w-full font-medium text-gray-700 text-sm"
             />
           </div>
         </div>
 
         <button
           @click="handleLogin"
-          class="w-full bg-gray-900 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-black transition transform active:scale-[0.98]"
+          class="bg-gray-900 hover:bg-black shadow-lg py-4 rounded-2xl w-full font-bold text-white active:scale-[0.98] transition transform"
         >
           Iniciar Sesión
         </button>
       </div>
 
-      <div class="text-center space-y-3 pt-6">
-        <p class="text-sm text-gray-500">
+      <div class="space-y-3 pt-6 text-center">
+        <p class="text-gray-500 text-sm">
           ¿Buscas servicios de belleza?
-          <RouterLink to="/registro-cliente" class="text-pink-600 font-bold hover:underline"
+          <RouterLink to="/registro-cliente" class="font-bold text-black hover:underline"
             >Adquierelos aquí como cliente</RouterLink
           >
         </p>
-        <div class="inline-block bg-purple-50 px-4 py-2 rounded-full">
-          <p class="text-xs text-purple-600 font-medium">
+        <div class="inline-block bg-gray-100 px-4 py-2 rounded-full">
+          <p class="font-medium text-black text-xs">
             ¿Eres profesional?
-            <RouterLink to="/registro-estilista" class="font-bold underline ml-1"
+            <RouterLink to="/registro-estilista" class="ml-1 font-bold underline"
               >Crea tu perfil como profesional de la belleza</RouterLink
             >
           </p>

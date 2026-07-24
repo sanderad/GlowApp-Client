@@ -40,7 +40,7 @@ const isAccountExpired = computed(
 const logout = () => {
   if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
     authStore.logout()
-    window.location.href = '/login'
+    router.push('/login')
   }
 }
 
@@ -92,51 +92,51 @@ const handlePhotoUpload = async (event: Event) => {
 </script>
 
 <template>
-  <div class="bg-gray-50 min-h-screen pb-24">
+  <div class="bg-gray-50 pb-24 min-h-screen">
     <div
-      class="relative bg-black pb-24 pt-6 px-6 rounded-b-[3rem] shadow-lg shadow-gray-200"
+      class="relative bg-black shadow-gray-200 shadow-lg px-6 pt-6 pb-24 rounded-b-[3rem]"
     >
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-white font-bold text-xl">Mi Perfil</h1>
+        <h1 class="font-bold text-white text-xl">Mi Perfil</h1>
       </div>
 
       <div class="flex flex-col items-center">
-        <h2 class="text-white font-black text-2xl tracking-tight">{{ userProfile.name }}</h2>
-        <p class="text-purple-100 text-sm font-medium">{{ userProfile.email }}</p>
+        <h2 class="font-black text-white text-2xl tracking-tight">{{ userProfile.name }}</h2>
+        <p class="font-medium text-gray-500 text-sm">{{ userProfile.email }}</p>
         <span
           v-if="isStylist"
-          class="mt-2 bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-white/30"
+          class="bg-white/20 backdrop-blur-sm mt-2 px-3 py-1 border border-white/30 rounded-full font-bold text-[10px] text-white uppercase tracking-wider"
         >
           Cuenta Profesional
         </span>
         <span
           v-if="isAdmin"
-          class="mt-2 bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-white/30"
+          class="bg-white/20 backdrop-blur-sm mt-2 px-3 py-1 border border-white/30 rounded-full font-bold text-[10px] text-white uppercase tracking-wider"
         >
           Cuenta Administrador
         </span>
       </div>
     </div>
 
-    <div class="relative -mt-16 mb-6 flex justify-center">
+    <div class="relative flex justify-center -mt-16 mb-6">
       <div class="relative">
-        <div class="w-32 h-32 rounded-full p-1 bg-white shadow-xl relative overflow-hidden group">
-          <img :src="userProfile.image" class="w-full h-full rounded-full object-cover" />
+        <div class="group relative bg-white shadow-xl p-1 rounded-full w-32 h-32 overflow-hidden">
+          <img :src="userProfile.image" class="rounded-full w-full h-full object-cover" />
 
           <div
             v-if="isUploadingPhoto"
-            class="absolute inset-0 bg-white/70 flex items-center justify-center rounded-full z-10"
+            class="z-10 absolute inset-0 flex justify-center items-center bg-white/70 rounded-full"
           >
-            <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-3xl"></i>
+            <i class="text-black text-3xl fa-solid fa-circle-notch fa-spin"></i>
           </div>
         </div>
 
         <button
           @click="fileInput?.click()"
           :disabled="isUploadingPhoto"
-          class="absolute bottom-1 right-1 bg-gray-900 text-white w-8 h-8 rounded-full border-2 border-white flex items-center justify-center shadow-md hover:scale-110 transition active:scale-95 cursor-pointer disabled:opacity-50"
+          class="right-1 bottom-1 absolute flex justify-center items-center bg-gray-900 disabled:opacity-50 shadow-md border-2 border-white rounded-full w-8 h-8 text-white hover:scale-110 active:scale-95 transition cursor-pointer"
         >
-          <i class="fa-solid fa-camera text-xs"></i>
+          <i class="text-xs fa-solid fa-camera"></i>
         </button>
 
         <!-- Input file oculto -->
@@ -150,98 +150,98 @@ const handlePhotoUpload = async (event: Event) => {
       </div>
     </div>
 
-    <main class="max-w-md mx-auto px-4 space-y-4">
+    <main class="space-y-4 mx-auto px-4 max-w-md">
       <!-- Alerta de Cuenta Suspendida -->
       <div
         v-if="isAccountExpired"
-        class="bg-red-50 border border-red-100 rounded-2xl p-4 shadow-sm text-center mb-4"
+        class="bg-red-50 shadow-sm mb-4 p-4 border border-red-100 rounded-2xl text-center"
       >
         <div
-          class="w-10 h-10 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3"
+          class="flex justify-center items-center bg-red-100 mx-auto mb-3 rounded-full w-10 h-10 text-red-500"
         >
-          <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+          <i class="text-lg fa-solid fa-triangle-exclamation"></i>
         </div>
-        <h3 class="font-bold text-red-800 text-sm mb-1">Cuenta Suspendida</h3>
-        <p class="text-[11px] text-red-600 mb-4 px-2">
+        <h3 class="mb-1 font-bold text-red-800 text-sm">Cuenta Suspendida</h3>
+        <p class="mb-4 px-2 text-[11px] text-red-600">
           Tu perfil público y chats están desactivados porque tu suscripción ha vencido.
         </p>
         <a
           :href="`https://wa.me/573128285881?text=${encodeURIComponent('Hola Dulfary, quiero renovar mi cuenta en GlowYou. Mi nombre es ' + (authStore.me?.fullName || ''))}`"
           target="_blank"
-          class="inline-flex items-center gap-2 bg-red-500 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-red-200 hover:bg-red-600 transition text-xs"
+          class="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 shadow-md shadow-red-200 px-4 py-2 rounded-xl font-bold text-white text-xs transition"
         >
-          <i class="fa-brands fa-whatsapp text-sm"></i> Renovar ahora
+          <i class="text-sm fa-brands fa-whatsapp"></i> Renovar ahora
         </a>
       </div>
 
       <!-- Panel de Opciones de Negocio (Solo Estilistas) -->
       <div
         v-if="isStylist"
-        class="bg-gradient-to-r from-gray-900 to-black rounded-2xl p-2 shadow-lg mb-4 text-white"
+        class="bg-gradient-to-r from-gray-900 to-black shadow-lg mb-4 p-2 rounded-2xl text-white"
       >
         <button
           @click="goToEdit"
-          class="w-full flex items-center p-3 hover:bg-white/10 rounded-xl transition group"
+          class="group flex items-center hover:bg-white/10 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center mr-4 group-hover:bg-pink-500/30 transition border border-pink-500/20"
+            class="flex justify-center items-center bg-blue-500/20 group-hover:bg-blue-500/30 mr-4 border border-black/20 rounded-xl w-10 h-10 text-blue-400 transition"
           >
             <i class="fa-solid fa-store"></i>
           </div>
           <div class="flex-1 text-left">
             <h3 class="font-bold text-white text-sm">Administrar Mi Negocio</h3>
-            <p class="text-xs text-gray-400">Servicios, Portafolio, Biografía</p>
+            <p class="text-gray-400 text-xs">Servicios, Portafolio, Biografía</p>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+          <i class="fa-chevron-right text-gray-500 text-xs fa-solid"></i>
         </button>
 
-        <div class="h-px bg-white/10 mx-14"></div>
+        <div class="bg-white/10 mx-14 h-px"></div>
 
         <button
           @click="goToPublicProfile"
-          class="w-full flex items-center p-3 hover:bg-white/10 rounded-xl transition group"
+          class="group flex items-center hover:bg-white/10 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mr-4 group-hover:bg-blue-500/30 transition border border-blue-500/20"
+            class="flex justify-center items-center bg-blue-500/20 group-hover:bg-blue-500/30 mr-4 border border-blue-500/20 rounded-xl w-10 h-10 text-blue-400 transition"
           >
             <i class="fa-solid fa-eye"></i>
           </div>
           <div class="flex-1 text-left">
             <h3 class="font-bold text-white text-sm">Ver Mi Perfil Público</h3>
-            <p class="text-xs text-gray-400">Así te ven los clientes</p>
+            <p class="text-gray-400 text-xs">Así te ven los clientes</p>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+          <i class="fa-chevron-right text-gray-500 text-xs fa-solid"></i>
         </button>
       </div>
 
       <!-- Panel de Administración (Solo Admin) -->
       <div
         v-if="isAdmin"
-        class="bg-gradient-to-r from-gray-900 to-black rounded-2xl p-2 shadow-lg mb-4 text-white"
+        class="bg-gradient-to-r from-gray-900 to-black shadow-lg mb-4 p-2 rounded-2xl text-white"
       >
         <button
           @click="goToAdmin"
-          class="w-full flex items-center p-3 hover:bg-white/10 rounded-xl transition group"
+          class="group flex items-center hover:bg-white/10 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mr-4 group-hover:bg-blue-500/30 transition border border-blue-500/20"
+            class="flex justify-center items-center bg-blue-500/20 group-hover:bg-blue-500/30 mr-4 border border-blue-500/20 rounded-xl w-10 h-10 text-blue-400 transition"
           >
             <i class="fa-solid fa-user-pen"></i>
           </div>
           <div class="flex-1 text-left">
             <h3 class="font-bold text-white text-sm">Administrar Perfiles</h3>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+          <i class="fa-chevron-right text-gray-500 text-xs fa-solid"></i>
         </button>
       </div>
 
-      <div class="bg-white rounded-2xl p-2 shadow-sm shadow-gray-100 border border-gray-50">
+      <div class="bg-white shadow-gray-100 shadow-sm p-2 border border-gray-50 rounded-2xl">
         <button
           @click="goToEdit"
-          class="w-full flex items-center p-3 hover:bg-gray-50 rounded-xl transition group"
+          class="group flex items-center hover:bg-gray-50 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-pink-50 text-pink-500 flex items-center justify-center mr-4 group-hover:bg-pink-100 transition"
+            class="flex justify-center items-center bg-gray-100 group-hover:bg-gray-100 mr-4 rounded-xl w-10 h-10 text-black transition"
           >
             <i class="fa-solid fa-user-pen"></i>
           </div>
@@ -249,52 +249,52 @@ const handlePhotoUpload = async (event: Event) => {
             <h3 class="font-bold text-gray-800 text-sm">Editar Datos Personales</h3>
             <p v-if="isStylist" class="text-[10px] text-gray-400">Nombre, Correo, Clave</p>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+          <i class="fa-chevron-right text-gray-300 text-xs fa-solid"></i>
         </button>
       </div>
 
-      <div class="bg-white rounded-2xl p-2 shadow-sm shadow-gray-100 border border-gray-50">
+      <div class="bg-white shadow-gray-100 shadow-sm p-2 border border-gray-50 rounded-2xl">
         <button
           @click="router.push('/perfil/ayuda')"
-          class="w-full flex items-center p-3 hover:bg-gray-50 rounded-xl transition group"
+          class="group flex items-center hover:bg-gray-50 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center mr-4 group-hover:bg-blue-100 transition"
+            class="flex justify-center items-center bg-blue-50 group-hover:bg-blue-100 mr-4 rounded-xl w-10 h-10 text-blue-500 transition"
           >
             <i class="fa-solid fa-circle-question"></i>
           </div>
           <div class="flex-1 text-left">
             <h3 class="font-bold text-gray-800 text-sm">Ayuda y Soporte</h3>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+          <i class="fa-chevron-right text-gray-300 text-xs fa-solid"></i>
         </button>
 
-        <div class="h-px bg-gray-50 mx-14"></div>
+        <div class="bg-gray-50 mx-14 h-px"></div>
 
         <button
           @click="router.push('/perfil/privacidad')"
-          class="w-full flex items-center p-3 hover:bg-gray-50 rounded-xl transition group"
+          class="group flex items-center hover:bg-gray-50 p-3 rounded-xl w-full transition"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mr-4 group-hover:bg-orange-100 transition"
+            class="flex justify-center items-center bg-orange-50 group-hover:bg-orange-100 mr-4 rounded-xl w-10 h-10 text-orange-500 transition"
           >
             <i class="fa-solid fa-shield"></i>
           </div>
           <div class="flex-1 text-left">
             <h3 class="font-bold text-gray-800 text-sm">Privacidad</h3>
           </div>
-          <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+          <i class="fa-chevron-right text-gray-300 text-xs fa-solid"></i>
         </button>
       </div>
 
       <button
         @click="logout"
-        class="w-full py-4 text-red-500 font-bold text-sm bg-white border border-red-50 rounded-2xl hover:bg-red-50 shadow-sm transition flex items-center justify-center gap-2 active:scale-[0.98]"
+        class="flex justify-center items-center gap-2 bg-white hover:bg-red-50 shadow-sm py-4 border border-red-50 rounded-2xl w-full font-bold text-red-500 text-sm active:scale-[0.98] transition"
       >
-        <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
+        <i class="fa-arrow-right-from-bracket fa-solid"></i> Cerrar Sesión
       </button>
 
-      <p class="text-center text-[10px] text-gray-400 mt-6 pb-4 font-medium">
+      <p class="mt-6 pb-4 font-medium text-[10px] text-gray-400 text-center">
         GlowYou v1.0.0 • Hecho con ❤️ en Cali
       </p>
     </main>

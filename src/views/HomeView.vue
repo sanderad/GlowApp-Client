@@ -40,7 +40,7 @@ watch(localSearchQuery, (newValue) => {
     <div class="bg-white px-4 pb-6 pt-2 rounded-b-3xl shadow-sm mb-6 sticky top-0 z-40">
       <nav class="flex justify-between items-center mb-4">
         <h1
-          class="text-xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
+          class="text-xl font-black tracking-tighter text-black"
         >
           GlowYou
         </h1>
@@ -52,23 +52,23 @@ watch(localSearchQuery, (newValue) => {
       </nav>
 
       <h2 class="text-xl font-bold mb-3 text-gray-800">
-        Hola, <span class="text-pink-500">¿Qué te harás hoy?</span> ✨
+        Hola, <span class="text-black">¿Qué te harás hoy?</span> ✨
       </h2>
 
       <div class="relative group">
         <i
-          class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-pink-400 group-focus-within:text-pink-600 transition"
+          class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-black group-focus-within:text-black transition"
         ></i>
         <input
           v-model="localSearchQuery"
           type="text"
           placeholder="Buscar servicios, estilistas..."
-          class="w-full bg-gray-50 border border-gray-100 py-3 pl-12 pr-10 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 focus:bg-white transition shadow-sm placeholder-gray-400"
+          class="w-full bg-gray-50 border border-gray-100 py-3 pl-12 pr-10 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition shadow-sm placeholder-gray-400"
         />
         <Transition name="fade">
           <i
             v-if="isTyping || stylistStore.isLoadingStylists"
-            class="fa-solid fa-circle-notch fa-spin absolute right-4 top-3.5 text-pink-500 transition"
+            class="fa-solid fa-circle-notch fa-spin absolute right-4 top-3.5 text-black transition"
           ></i>
         </Transition>
       </div>
@@ -80,7 +80,7 @@ watch(localSearchQuery, (newValue) => {
         <button
           v-if="stylistStore.selectedCategory !== 'Todas'"
           @click="selectCategory('Todas')"
-          class="text-xs text-pink-600 font-bold hover:underline"
+          class="text-xs text-black font-bold hover:underline"
         >
           Borrar filtro
         </button>
@@ -106,21 +106,15 @@ watch(localSearchQuery, (newValue) => {
           <span
             class="text-xs"
             :class="{
-              'text-pink-500':
+              'text-black':
                 cat.name === stylistStore.selectedCategory &&
-                stylistStore.selectedCategory === 'Cabello',
-              'text-purple-500':
-                cat.name === stylistStore.selectedCategory &&
-                stylistStore.selectedCategory === 'Uñas',
+                ['Cabello', 'Uñas', 'Maquillaje'].includes(stylistStore.selectedCategory),
               'text-orange-500':
                 cat.name === stylistStore.selectedCategory &&
                 stylistStore.selectedCategory === 'Facial',
               'text-green-500':
                 cat.name === stylistStore.selectedCategory &&
                 stylistStore.selectedCategory === 'Corporal',
-              'text-fuchsia-500':
-                cat.name === stylistStore.selectedCategory &&
-                stylistStore.selectedCategory === 'Maquillaje',
               'text-blue-500':
                 cat.name === stylistStore.selectedCategory &&
                 stylistStore.selectedCategory === 'Barbería',
@@ -139,7 +133,7 @@ watch(localSearchQuery, (newValue) => {
 
       <div class="flex flex-col">
         <div v-if="stylistStore.isLoadingStylists" class="flex items-center justify-center">
-          <i class="fa-solid fa-spinner animate-spin text-pink-500"></i>
+          <i class="fa-solid fa-spinner animate-spin text-black"></i>
         </div>
         <StylistCard
           v-if="!stylistStore.isLoadingStylists"

@@ -59,10 +59,10 @@ const getServiceVisuals = (serviceName: string) => {
   const name = serviceName.toLowerCase()
 
   if (name.includes('uña') || name.includes('acrílica') || name.includes('semi'))
-    return { icon: 'fa-wand-magic-sparkles', color: 'bg-pink-50 text-pink-500' }
+    return { icon: 'fa-wand-magic-sparkles', color: 'bg-gray-100 text-black' }
 
   if (name.includes('manicure') || name.includes('pedicure') || name.includes('rus'))
-    return { icon: 'fa-hand-sparkles', color: 'bg-purple-50 text-purple-500' }
+    return { icon: 'fa-hand-sparkles', color: 'bg-gray-100 text-black' }
 
   if (name.includes('retiro') || name.includes('limpieza'))
     return { icon: 'fa-soap', color: 'bg-blue-50 text-blue-500' }
@@ -74,7 +74,7 @@ const getServiceVisuals = (serviceName: string) => {
     return { icon: 'fa-user-tie', color: 'bg-gray-100 text-gray-700' }
 
   if (name.includes('maquillaje') || name.includes('pestaña') || name.includes('ceja'))
-    return { icon: 'fa-eye', color: 'bg-rose-50 text-rose-500' }
+    return { icon: 'fa-eye', color: 'bg-gray-100 text-black' }
 
   return { icon: 'fa-star', color: 'bg-yellow-50 text-yellow-500' }
 }
@@ -135,9 +135,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-gray-50 min-h-screen relative">
+  <div class="bg-gray-50 h-screen overflow-hidden relative">
     <div
-      class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 pointer-events-none max-w-md mx-auto"
+      class="absolute top-0 left-0 right-0 px-4 pb-4 pt-[calc(env(safe-area-inset-top,24px)+1rem)] flex justify-between items-center z-50 pointer-events-none max-w-md mx-auto"
     >
       <button
         @click="goBack"
@@ -160,7 +160,9 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div v-if="loading" class="animate-pulse">
+    <!-- Contenedor scrollable interno -->
+    <div class="h-full overflow-y-auto w-full pb-6">
+      <div v-if="loading" class="animate-pulse">
       <div class="h-80 w-full bg-gray-300"></div>
       <div class="relative -mt-6 bg-white rounded-t-[2rem] px-6 pt-8 pb-24 z-20">
         <div class="flex justify-between items-start mb-4">
@@ -227,14 +229,14 @@ onMounted(async () => {
             class="pb-3 px-2 mr-6 text-base transition-colors relative"
             :class="
               activeTab === 'services'
-                ? 'text-pink-600 font-bold'
+                ? 'text-black font-bold'
                 : 'text-gray-400 font-medium hover:text-gray-600'
             "
           >
             Servicios
             <span
               v-if="activeTab === 'services'"
-              class="absolute bottom-0 left-0 w-full h-0.5 bg-pink-600 rounded-t-full"
+              class="absolute bottom-0 left-0 w-full h-0.5 bg-black rounded-t-full"
             ></span>
           </button>
 
@@ -243,14 +245,14 @@ onMounted(async () => {
             class="pb-3 px-2 mr-6 text-base transition-colors relative"
             :class="
               activeTab === 'gallery'
-                ? 'text-pink-600 font-bold'
+                ? 'text-black font-bold'
                 : 'text-gray-400 font-medium hover:text-gray-600'
             "
           >
             Galería ({{ stylistStore.stylistDetailed?.portfolio.length || 0 }})
             <span
               v-if="activeTab === 'gallery'"
-              class="absolute bottom-0 left-0 w-full h-0.5 bg-pink-600 rounded-t-full"
+              class="absolute bottom-0 left-0 w-full h-0.5 bg-black rounded-t-full"
             ></span>
           </button>
 
@@ -259,14 +261,14 @@ onMounted(async () => {
             class="pb-3 px-2 text-base transition-colors relative"
             :class="
               activeTab === 'reviews'
-                ? 'text-pink-600 font-bold'
+                ? 'text-black font-bold'
                 : 'text-gray-400 font-medium hover:text-gray-600'
             "
           >
             Reseñas
             <span
               v-if="activeTab === 'reviews'"
-              class="absolute bottom-0 left-0 w-full h-0.5 bg-pink-600 rounded-t-full"
+              class="absolute bottom-0 left-0 w-full h-0.5 bg-black rounded-t-full"
             ></span>
           </button>
         </div>
@@ -402,7 +404,7 @@ onMounted(async () => {
           <button
             v-if="!isWritingReview"
             @click="isWritingReview = true"
-            class="w-full bg-pink-50 text-pink-600 font-bold py-3 rounded-xl border border-pink-100 hover:bg-pink-100 transition"
+            class="w-full bg-gray-100 text-black font-bold py-3 rounded-xl border border-gray-200 hover:bg-gray-100 transition"
           >
             Escribir una reseña
           </button>
@@ -436,13 +438,13 @@ onMounted(async () => {
               v-model="newReviewComment"
               rows="3"
               placeholder="¿Qué tal te pareció el servicio?"
-              class="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm focus:ring-2 focus:ring-pink-400 focus:outline-none focus:bg-white transition mb-3 resize-none"
+              class="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm focus:ring-2 focus:ring-black focus:outline-none focus:bg-white transition mb-3 resize-none"
             ></textarea>
 
             <button
               @click="handleReviewSubmit"
               :disabled="stylistStore.isSubmittingReview"
-              class="w-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-3 rounded-xl shadow-md transition disabled:opacity-50 flex items-center justify-center relative"
+              class="w-full bg-black text-white font-bold py-3 rounded-xl shadow-md transition disabled:opacity-50 flex items-center justify-center relative"
             >
               <span :class="{ 'opacity-0': stylistStore.isSubmittingReview }">Publicar Reseña</span>
               <i
@@ -474,7 +476,7 @@ onMounted(async () => {
                   />
                   <div
                     v-else
-                    class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs font-bold ring-2 ring-white shadow-sm"
+                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-black text-xs font-bold ring-2 ring-white shadow-sm"
                   >
                     {{ review.user.fullName.substring(0, 2).toUpperCase() }}
                   </div>
@@ -500,10 +502,11 @@ onMounted(async () => {
           </div>
         </div>
       </div>
+    </div>
 
-      <div
-        class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg p-4 pb-6 border-t border-gray-100 flex items-center justify-between z-50 max-w-md mx-auto rounded-t-3xl shadow-[0_-5px_30px_rgba(0,0,0,0.05)]"
-      >
+    <div
+      class="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg p-4 pb-6 border-t border-gray-100 flex items-center justify-between z-50 max-w-md mx-auto rounded-t-3xl shadow-[0_-5px_30px_rgba(0,0,0,0.05)]"
+    >
         <div class="flex flex-col pl-2">
           <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider"
             >Servicios desde</span
@@ -513,7 +516,7 @@ onMounted(async () => {
         <button
           @click="goToChat"
           :disabled="isStartingChat"
-          class="bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 hover:shadow-pink-300 transition transform active:scale-95 flex items-center gap-2 text-sm disabled:opacity-50"
+          class="bg-black text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-gray-200 hover:shadow-gray-200 transition transform active:scale-95 flex items-center gap-2 text-sm disabled:opacity-50"
         >
           <span v-if="!isStartingChat" class="flex items-center gap-2"
             ><i class="fa-solid fa-comment-dots text-lg"></i> Chatear y Agendar</span

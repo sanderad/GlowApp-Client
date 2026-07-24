@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (response.status === 401 || response.status === 500)
         throw new Error('Error al iniciar sesión 2')
 
-      const token  = response.data.token
+      const token = response.data.token
 
       await Preferences.set({
         key: 'auth_token',
@@ -94,6 +94,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // TODO: Hace falta mejorar el sistema de actualizar los sockets y emitir cada vez que
+  // TODO: un usuario se conecta para arreglar el chat.
+
   async function registerStylist(stylist: StylistRegister): Promise<boolean> {
     try {
       console.log('registerStylist')
@@ -112,6 +115,17 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function getMe(): Promise<boolean> {
+    if (!token.value) {
+      const token = await Preferences.get({ key: 'auth_token' })
+      if (token.value) {
+        token.value = token.value
+        isAuthenticated.value = true
+      }
+    }
+
+    if (me.value) {
+      return true
+    }
     try {
       const response = await apiClient.get<User>('/auth/me')
       if (response.status === 401 || response.status === 500)
@@ -127,8 +141,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  function logout() {
-    localStorage.removeItem('token')
+  async function logout() {
+    await Preferences.remove({ key: 'auth_token' })
     token.value = ''
     user.value = null
     me.value = null

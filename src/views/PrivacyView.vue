@@ -68,7 +68,7 @@ const router = useRouter()
         <p class="text-xs leading-relaxed">
           Puedes acceder a tu información personal entrando a "Editar Perfil". Si deseas eliminar
           permanentemente tu cuenta y toda la data asociada, por favor contacta a
-          <a href="mailto:privacidad@glowapp.co" class="text-pink-500 font-bold"
+          <a href="mailto:privacidad@glowapp.co" class="text-black font-bold"
             >privacidad@glowapp.co</a
           >.
         </p>

@@ -12,6 +12,10 @@ const notificationStore = useNotificationStore()
 const activeTab = ref<'account' | 'business'>('account')
 const isSaving = ref(false)
 
+const goBack = () => {
+  router.push('/perfil')
+}
+
 // Estado del formulario de cuenta (Todos los usuarios)
 const accountForm = ref({
   fullName: '',
@@ -190,7 +194,7 @@ const saveChanges = async () => {
     <nav
       class="bg-white sticky top-0 left-0 w-full z-30 px-4 py-3 shadow-sm border-b border-gray-100 flex justify-between items-center h-14"
     >
-      <button @click="router.back()" class="text-gray-400 hover:text-gray-600 transition p-1">
+      <button @click="goBack" class="text-gray-400 hover:text-gray-600 transition p-1">
         <i class="fa-solid fa-arrow-left text-lg"></i>
       </button>
       <h1 class="font-bold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
@@ -199,7 +203,7 @@ const saveChanges = async () => {
       <button
         @click="saveChanges"
         :disabled="isSaving"
-        class="text-pink-600 font-bold text-sm bg-pink-50 px-3 py-1.5 rounded-lg active:scale-95 transition flex items-center gap-2"
+        class="text-black font-bold text-sm bg-gray-100 px-3 py-1.5 rounded-lg active:scale-95 transition flex items-center gap-2"
         :class="{ 'opacity-50 cursor-not-allowed text-gray-400 bg-gray-100': isSaving }"
       >
         <span v-if="!isSaving">Guardar</span>
@@ -246,7 +250,7 @@ const saveChanges = async () => {
             <input
               v-model="accountForm.fullName"
               type="text"
-              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
 
@@ -257,7 +261,7 @@ const saveChanges = async () => {
             <input
               v-model="accountForm.email"
               type="email"
-              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
         </div>
@@ -273,7 +277,7 @@ const saveChanges = async () => {
               v-model="accountForm.password"
               type="password"
               placeholder="Deja en blanco para no cambiarla"
-              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
         </div>
@@ -282,7 +286,7 @@ const saveChanges = async () => {
       <!-- PESTAÑA: NEGOCIO (Solo estilistas) -->
       <div v-if="activeTab === 'business' && isStylist" class="animate-fade-in space-y-6">
         <div v-if="isLoadingDetails" class="flex justify-center items-center py-10">
-          <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-3xl"></i>
+          <i class="fa-solid fa-circle-notch fa-spin text-black text-3xl"></i>
         </div>
 
         <template v-else>
@@ -299,7 +303,7 @@ const saveChanges = async () => {
               <input
                 v-model="businessForm.businessName"
                 type="text"
-                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
               />
             </div>
 
@@ -327,7 +331,7 @@ const saveChanges = async () => {
                   @input="businessForm.phone = businessForm.phone.replace(/[\\s-]/g, '')"
                   type="tel"
                   placeholder="3001234567"
-                  class="w-full bg-gray-50 border border-gray-200 p-3 pl-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+                  class="w-full bg-gray-50 border border-gray-200 p-3 pl-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
                 />
               </div>
               <p class="text-[10px] text-gray-400 mt-1.5 ml-1">
@@ -341,7 +345,7 @@ const saveChanges = async () => {
               >
               <select
                 v-model="businessForm.category"
-                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
               >
                 <option value="Uñas">Uñas</option>
                 <option value="Cabello">Cabello</option>
@@ -357,7 +361,7 @@ const saveChanges = async () => {
               <textarea
                 v-model="businessForm.bio"
                 rows="3"
-                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm resize-none"
+                class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black text-sm resize-none"
               ></textarea>
             </div>
           </div>
@@ -387,9 +391,9 @@ const saveChanges = async () => {
             <button
               @click="triggerFileInput"
               :disabled="isUploading"
-              class="w-full bg-pink-50 border border-pink-200 text-pink-600 font-bold py-3 rounded-xl text-sm transition flex justify-center items-center h-12"
+              class="w-full bg-gray-100 border border-gray-200 text-black font-bold py-3 rounded-xl text-sm transition flex justify-center items-center h-12"
               :class="
-                isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-100 active:scale-95'
+                isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 active:scale-95'
               "
             >
               <span v-if="!isUploading"><i class="fa-solid fa-plus mr-1"></i> Añadir Foto</span>

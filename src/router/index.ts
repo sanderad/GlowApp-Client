@@ -5,7 +5,7 @@ import EditProfileView from '../views/EditProfileView.vue'
 import HelpSupportView from '../views/HelpSupportView.vue'
 import PrivacyView from '../views/PrivacyView.vue'
 import { useAuthStore } from '../stores/auth.store'
-import {StatusBar, Style} from '@capacitor/status-bar'
+import { StatusBar, Style } from '@capacitor/status-bar'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +33,17 @@ const router = createRouter({
       path: '/perfil',
       name: RN.PERFIL,
       component: () => import('../views/PerfilView.vue'),
-      meta: { showBottomNav: true, statusBarColor: '#432dd7', statusBarStyle: 'DARK' },
+      meta: { showBottomNav: true, statusBarColor: '#000000', statusBarStyle: 'DARK' },
+      beforeEnter: async (to, from, next) => {
+        const authStore = useAuthStore()
+        const data = await authStore.getMe()
+        console.log(data)
+        if (data) {
+          next()
+        } else {
+          next({ name: RN.LOGIN })
+        }
+      },
     },
     {
       path: '/perfil/editar',
@@ -57,13 +67,13 @@ const router = createRouter({
       path: '/estilista/:id', // :id es el parámetro dinámico
       name: RN.STYLIST_DETAIL,
       component: () => import('../views/StylistDetailView.vue'),
-      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' }, // Ocultamos la barra de abajo para dar foco
+      meta: { showBottomNav: false, statusBarColor: 'transparent', statusBarStyle: 'LIGHT' }, // Ocultamos la barra de abajo para dar foco
     },
     {
       path: '/chat/:id',
       name: RN.CHAT_DETAIL,
       component: () => import('../views/ChatDetailView.vue'),
-      meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' }, // Ocultamos la nav principal para dar foco al teclado
+      meta: { showBottomNav: false, statusBarColor: 'transparent', statusBarStyle: 'LIGHT' }, // Ocultamos la nav principal para dar foco al teclado
     },
     // LOGIN
     {
@@ -71,6 +81,16 @@ const router = createRouter({
       name: RN.LOGIN,
       component: () => import('../views/auth/LoginView.vue'),
       meta: { showBottomNav: false, statusBarColor: '#FFFFFF', statusBarStyle: 'LIGHT' },
+      beforeEnter: async (to, from, next) => {
+        const authStore = useAuthStore()
+        const data = await authStore.getMe()
+
+        if (data) {
+          next({ name: RN.HOME })
+        } else {
+          next()
+        }
+      }
     },
     // REGISTRO CLIENTE (Usuario normal)
     {
@@ -127,8 +147,45 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-router.afterEach((to) => {
-  
+router.afterEach(async (to) => {
+  try {
+    // 1. Forzamos a que la barra de estado se superponga (sea transparente y flote sobre la webview)
+    // Esto soluciona problemas en teléfonos Samsung y Androids modificados.
+    await StatusBar.setOverlaysWebView({ overlay: true })
+
+    if (to.meta.statusBarColor) {
+      if (to.meta.statusBarColor === 'transparent') {
+        document.body.style.backgroundColor = 'transparent'
+        document.body.style.paddingTop = '0px'
+      } else {
+        document.body.style.backgroundColor = to.meta.statusBarColor as string
+        document.body.style.paddingTop = 'env(safe-area-inset-top, 24px)'
+      }
+
+      // También lo seteamos nativamente por si acaso el overlay fallara en algún OS muy viejo
+      if (to.meta.statusBarColor !== 'transparent') {
+        await StatusBar.setBackgroundColor({ color: to.meta.statusBarColor as string }).catch(() => { })
+      }
+
+      // Fallback para iOS
+      let metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta')
+        metaThemeColor.setAttribute('name', 'theme-color')
+        document.head.appendChild(metaThemeColor)
+      }
+      metaThemeColor.setAttribute('content', to.meta.statusBarColor as string)
+    }
+
+    if (to.meta.statusBarStyle) {
+      // Style.Dark hace que el texto sea claro (para fondos oscuros)
+      // Style.Light hace que el texto sea oscuro (para fondos claros)
+      const style = to.meta.statusBarStyle === 'DARK' ? Style.Dark : Style.Light
+      await StatusBar.setStyle({ style })
+    }
+  } catch (e) {
+    // Silently fail on web
+  }
 })
 
 export default router

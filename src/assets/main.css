@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
+body {
+  padding-top: env(safe-area-inset-top, 24px);
+  margin: 0;
+}
+
 html {
   /* Esto obliga a que el espacio del scroll siempre esté reservado */
   scrollbar-gutter: stable;

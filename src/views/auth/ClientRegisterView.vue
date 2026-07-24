@@ -82,13 +82,13 @@ const handleRegister = async () => {
         <div
           v-if="!form.photoUrl"
           @click="triggerProfilePhotoInput"
-          class="w-24 h-24 rounded-full bg-gray-50 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-pink-50 hover:border-pink-300 hover:text-pink-500 transition relative"
+          class="w-24 h-24 rounded-full bg-gray-50 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-100 hover:border-gray-200 hover:text-black transition relative"
         >
           <div
             v-if="isUploadingProfilePhoto"
             class="absolute inset-0 bg-white/80 flex items-center justify-center rounded-full z-10"
           >
-            <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-xl"></i>
+            <i class="fa-solid fa-circle-notch fa-spin text-black text-xl"></i>
           </div>
           <i class="fa-solid fa-camera text-xl mb-1"></i>
           <span class="text-[10px] font-bold">Subir Foto</span>
@@ -120,7 +120,7 @@ const handleRegister = async () => {
             v-model="form.fullName"
             type="text"
             placeholder="Tu nombre"
-            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm font-medium transition"
+            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-sm font-medium transition"
           />
         </div>
         <div>
@@ -129,7 +129,7 @@ const handleRegister = async () => {
             v-model="form.email"
             type="email"
             placeholder="tucorreo@ejemplo.com"
-            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm font-medium transition"
+            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-sm font-medium transition"
           />
         </div>
         <div>
@@ -138,21 +138,21 @@ const handleRegister = async () => {
             v-model="form.password"
             type="password"
             placeholder="••••••••"
-            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm font-medium transition"
+            class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black text-sm font-medium transition"
           />
         </div>
       </div>
 
       <button
         @click="handleRegister"
-        class="w-full bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-pink-200 mt-8 hover:bg-pink-700 transition transform active:scale-[0.98]"
+        class="w-full bg-black text-white font-bold py-4 rounded-2xl shadow-lg shadow-gray-200 mt-8 hover:bg-black transition transform active:scale-[0.98]"
       >
         Registrarme
       </button>
 
       <p class="text-center text-xs text-gray-400 mt-6">
         Al registrarte aceptas nuestros
-        <a href="#" class="underline hover:text-pink-600">Términos y Condiciones</a>.
+        <a href="#" class="underline hover:text-black">Términos y Condiciones</a>.
       </p>
     </div>
   </div>

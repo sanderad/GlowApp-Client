@@ -212,7 +212,7 @@ const removeService = (index: number) => {
 <template>
   <div class="bg-gray-50 text-gray-800 font-sans min-h-screen pb-10">
     <nav
-      class="bg-white fixed top-0 left-0 w-full z-50 px-6 py-4 shadow-sm border-b border-gray-100 flex justify-between items-center"
+      class="bg-white sticky top-0 left-0 w-full z-50 px-6 py-4 shadow-sm border-b border-gray-100 flex justify-between items-center"
     >
       <button @click="router.back()" class="text-gray-400 hover:text-gray-600">
         <i class="fa-solid fa-arrow-left text-xl"></i>
@@ -229,7 +229,7 @@ const removeService = (index: number) => {
           class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
           :class="
             currentStep >= 1
-              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              ? 'bg-black text-white shadow-lg shadow-gray-200'
               : 'bg-gray-200 text-gray-500'
           "
         >
@@ -240,7 +240,7 @@ const removeService = (index: number) => {
           class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
           :class="
             currentStep >= 2
-              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              ? 'bg-black text-white shadow-lg shadow-gray-200'
               : 'bg-gray-200 text-gray-500'
           "
         >
@@ -251,7 +251,7 @@ const removeService = (index: number) => {
           class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
           :class="
             currentStep >= 3
-              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              ? 'bg-black text-white shadow-lg shadow-gray-200'
               : 'bg-gray-200 text-gray-500'
           "
         >
@@ -262,7 +262,7 @@ const removeService = (index: number) => {
           class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 z-10"
           :class="
             currentStep >= 4
-              ? 'bg-pink-600 text-white shadow-lg shadow-pink-200'
+              ? 'bg-black text-white shadow-lg shadow-gray-200'
               : 'bg-gray-200 text-gray-500'
           "
         >
@@ -287,7 +287,7 @@ const removeService = (index: number) => {
               v-model="stylistForm.fullName"
               type="text"
               placeholder="Ej: Laura Gómez"
-              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
 
@@ -299,7 +299,7 @@ const removeService = (index: number) => {
               v-model="stylistForm.email"
               type="email"
               placeholder="tucorreo@ejemplo.com"
-              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
 
@@ -309,7 +309,7 @@ const removeService = (index: number) => {
               v-model="stylistForm.password"
               type="password"
               placeholder="••••••••"
-              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
         </div>
@@ -338,13 +338,13 @@ const removeService = (index: number) => {
           <div
             v-if="!stylistForm.photoUrl"
             @click="triggerProfilePhotoInput"
-            class="w-28 h-28 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-pink-50 hover:border-pink-300 hover:text-pink-500 transition relative"
+            class="w-28 h-28 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-100 hover:border-gray-200 hover:text-black transition relative"
           >
             <div
               v-if="isUploadingProfilePhoto"
               class="absolute inset-0 bg-white/80 flex items-center justify-center rounded-full z-10"
             >
-              <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-2xl"></i>
+              <i class="fa-solid fa-circle-notch fa-spin text-black text-2xl"></i>
             </div>
             <i class="fa-solid fa-camera text-2xl mb-1"></i>
             <span class="text-[10px] font-bold">Subir Foto</span>
@@ -381,7 +381,7 @@ const removeService = (index: number) => {
               v-model="stylistForm.businessName"
               type="text"
               placeholder="Ej: Ana María Nails"
-              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
             />
           </div>
 
@@ -409,7 +409,7 @@ const removeService = (index: number) => {
                 @input="stylistForm.phone = stylistForm.phone.replace(/[\\s-]/g, '')"
                 type="tel"
                 placeholder="3001234567"
-                class="w-full bg-white border border-gray-200 p-3 pl-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 transition text-sm"
+                class="w-full bg-white border border-gray-200 p-3 pl-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition text-sm"
               />
             </div>
             <p class="text-[10px] text-gray-400 mt-1.5 ml-1">Escríbelo sin espacios ni guiones.</p>
@@ -427,7 +427,7 @@ const removeService = (index: number) => {
                 class="border py-3 rounded-xl text-xs transition font-bold"
                 :class="
                   stylistForm.category === cat
-                    ? 'border-pink-500 bg-pink-50 text-pink-600 shadow-sm'
+                    ? 'border-black bg-gray-100 text-black shadow-sm'
                     : 'border-gray-200 bg-white text-gray-500'
                 "
               >
@@ -441,7 +441,7 @@ const removeService = (index: number) => {
             <textarea
               v-model="stylistForm.bio"
               rows="3"
-              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm resize-none"
+              class="w-full bg-white border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black text-sm resize-none"
               placeholder="Ej: Experta en acrilicas y diseño a mano alzada con 3 años de experiencia..."
             ></textarea>
           </div>
@@ -490,7 +490,7 @@ const removeService = (index: number) => {
               <p class="text-xs text-gray-400">{{ serv.duration }}</p>
             </div>
             <div class="flex items-center gap-3">
-              <span class="font-bold text-pink-600 text-sm"
+              <span class="font-bold text-black text-sm"
                 >${{ Number(serv.price).toLocaleString() }}</span
               >
               <button @click="removeService(index)" class="text-gray-300 hover:text-red-500">
@@ -525,7 +525,7 @@ const removeService = (index: number) => {
             </div>
             <button
               @click="addService"
-              class="w-full bg-white border-2 border-pink-500 text-pink-600 font-bold py-2 rounded-xl text-sm hover:bg-pink-50 transition"
+              class="w-full bg-white border-2 border-black text-black font-bold py-2 rounded-xl text-sm hover:bg-gray-100 transition"
             >
               <i class="fa-solid fa-plus mr-1"></i> Agregar a la lista
             </button>
@@ -566,22 +566,22 @@ const removeService = (index: number) => {
 
         <div
           @click="triggerFileInput"
-          class="bg-pink-50 border-2 border-dashed border-pink-300 rounded-3xl p-8 text-center mb-6 cursor-pointer hover:bg-pink-100 transition group relative"
+          class="bg-gray-100 border-2 border-dashed border-gray-200 rounded-3xl p-8 text-center mb-6 cursor-pointer hover:bg-gray-100 transition group relative"
         >
           <div
             v-if="isUploading"
             class="absolute inset-0 bg-white/80 flex items-center justify-center rounded-3xl z-10"
           >
-            <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-2xl"></i>
+            <i class="fa-solid fa-circle-notch fa-spin text-black text-2xl"></i>
           </div>
 
           <div
-            class="w-16 h-16 bg-white text-pink-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:scale-110 transition"
+            class="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:scale-110 transition"
           >
             <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
           </div>
-          <h3 class="font-bold text-pink-900">Toca para subir fotos</h3>
-          <p class="text-xs text-pink-400 mt-1">Soporta JPG, PNG (Máx 5)</p>
+          <h3 class="font-bold text-black">Toca para subir fotos</h3>
+          <p class="text-xs text-black mt-1">Soporta JPG, PNG (Máx 5)</p>
         </div>
 
         <input
@@ -619,7 +619,7 @@ const removeService = (index: number) => {
               <input
                 type="checkbox"
                 checked
-                class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 shadow-sm checked:bg-pink-500 checked:border-pink-500 focus:ring-2 focus:ring-pink-300"
+                class="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 shadow-sm checked:bg-black checked:border-black focus:ring-2 focus:ring-black"
               />
               <i
                 class="fa-solid fa-check text-white absolute left-1 top-1 text-xs opacity-0 peer-checked:opacity-100 pointer-events-none"
@@ -629,7 +629,7 @@ const removeService = (index: number) => {
               Declaro que soy el autor original de estas fotos y libero a
               <span class="font-bold text-gray-700">GlowYou</span> de cualquier reclamo por derechos
               de autor.
-              <a href="#" class="text-pink-600 underline">Leer términos legales.</a>
+              <a href="#" class="text-black underline">Leer términos legales.</a>
             </p>
           </label>
         </div>
@@ -653,7 +653,7 @@ const removeService = (index: number) => {
           <button
             @click="nextStep"
             :disabled="!isStep4Valid || isRegistering"
-            class="w-2/3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold py-4 rounded-2xl shadow-lg transition flex items-center justify-center relative"
+            class="w-2/3 bg-black text-white font-bold py-4 rounded-2xl shadow-lg transition flex items-center justify-center relative"
             :class="
               !isStep4Valid || isRegistering ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
             "
@@ -680,11 +680,11 @@ const removeService = (index: number) => {
           class="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 text-white shadow-xl mx-2 relative overflow-hidden mb-8"
         >
           <div
-            class="absolute -top-10 -right-10 w-42 h-32 bg-pink-500 rounded-full opacity-30 blur-2xl"
+            class="absolute -top-10 -right-10 w-42 h-32 bg-black rounded-full opacity-30 blur-2xl"
           ></div>
 
           <h3 class="text-lg font-bold mb-1">Plan Profesional</h3>
-          <div class="text-3xl font-black text-pink-400 mb-2">
+          <div class="text-3xl font-black text-black mb-2">
             $0 <span class="text-sm text-gray-400 font-normal">/primer mes</span>
           </div>
           <p class="text-xs text-gray-300 leading-relaxed mb-4">

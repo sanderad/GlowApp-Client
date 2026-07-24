@@ -13,13 +13,13 @@ const chatStore = useChatStore()
       <RouterLink
         to="/"
         class="flex flex-col items-center transition group"
-        active-class="text-pink-600"
-        exact-active-class="text-pink-600"
+        active-class="text-black"
+        exact-active-class="text-black"
       >
         <template #default="{ isActive }">
           <div
             class="p-1.5 mb-1 rounded-xl transition"
-            :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
+            :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
             <i class="fa-solid fa-house text-lg"></i>
           </div>
@@ -34,12 +34,12 @@ const chatStore = useChatStore()
       <RouterLink
         to="/favoritos"
         class="flex flex-col items-center transition group"
-        active-class="text-pink-600"
+        active-class="text-black"
       >
         <template #default="{ isActive }">
           <div
             class="p-1.5 mb-1 rounded-xl transition"
-            :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
+            :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
             <i class="fa-solid fa-heart text-lg"></i>
           </div>
@@ -54,19 +54,19 @@ const chatStore = useChatStore()
       <RouterLink
         to="/chats"
         class="flex flex-col items-center transition group"
-        active-class="text-pink-600"
+        active-class="text-black"
       >
         <template #default="{ isActive }">
           <div class="relative">
             <div
               class="p-1.5 mb-1 rounded-xl transition"
-              :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
+              :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
             >
               <i class="fa-solid fa-comment text-lg"></i>
             </div>
             <div
               v-if="chatStore.totalUnreadCount > 0"
-              class="absolute -top-1 -right-2 bg-pink-500 text-white text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border-2 border-white shadow-sm"
+              class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border-2 border-white shadow-sm"
             >
               {{ chatStore.totalUnreadCount > 99 ? '99+' : chatStore.totalUnreadCount }}
             </div>
@@ -82,12 +82,12 @@ const chatStore = useChatStore()
       <RouterLink
         to="/perfil"
         class="flex flex-col items-center transition group"
-        active-class="text-pink-600"
+        active-class="text-black"
       >
         <template #default="{ isActive }">
           <div
             class="p-1.5 mb-1 rounded-xl transition"
-            :class="isActive ? 'bg-pink-50 shadow-sm shadow-pink-100' : 'group-hover:bg-gray-50'"
+            :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
             <i class="fa-solid fa-user text-lg"></i>
           </div>

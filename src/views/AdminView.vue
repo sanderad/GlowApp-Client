@@ -157,7 +157,7 @@ const goToProfile = () => {
           v-model="searchQuery"
           type="text"
           placeholder="Buscar estilista por nombre..."
-          class="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 py-3 pl-12 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 transition shadow-inner"
+          class="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 py-3 pl-12 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition shadow-inner"
         />
       </div>
     </nav>
@@ -198,7 +198,7 @@ const goToProfile = () => {
       <div class="space-y-3">
         <div class="flex justify-between items-end px-2">
           <h2 class="font-bold text-gray-800 text-lg">Gestión de Suscripciones</h2>
-          <button class="text-xs text-pink-600 font-bold hover:underline">
+          <button class="text-xs text-black font-bold hover:underline">
             <i class="fa-solid fa-filter mr-1"></i>Filtrar
           </button>
         </div>
@@ -320,7 +320,7 @@ const goToProfile = () => {
             <label class="block text-xs font-bold text-gray-700 mb-1">Tipo de Suscripción</label>
             <select
               v-model="subscriptionType"
-              class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
+              class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-black cursor-pointer"
             >
               <option>Mensual ($20.000)</option>
               <option>Trimestral ($50.000)</option>
@@ -335,7 +335,7 @@ const goToProfile = () => {
                 class="flex-1 py-2 rounded-lg text-xs transition shadow-sm"
                 :class="
                   paymentMethod === 'nequi'
-                    ? 'bg-pink-50 border border-pink-200 text-pink-600 font-bold'
+                    ? 'bg-gray-100 border border-gray-200 text-black font-bold'
                     : 'bg-white border border-gray-200 text-gray-500 font-medium hover:bg-gray-50'
                 "
               >
@@ -346,7 +346,7 @@ const goToProfile = () => {
                 class="flex-1 py-2 rounded-lg text-xs transition shadow-sm"
                 :class="
                   paymentMethod === 'efectivo'
-                    ? 'bg-pink-50 border border-pink-200 text-pink-600 font-bold'
+                    ? 'bg-gray-100 border border-gray-200 text-black font-bold'
                     : 'bg-white border border-gray-200 text-gray-500 font-medium hover:bg-gray-50'
                 "
               >

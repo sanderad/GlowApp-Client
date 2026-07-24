@@ -157,11 +157,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="h-screen relative bg-chat-pattern font-sans">
+  <div class="h-screen relative bg-chat-pattern font-sans overflow-hidden">
     <header
-      class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm p-3 px-4 flex items-center gap-3 shadow-sm z-30 border-b border-gray-100 h-16 max-w-md mx-auto"
+      class="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-sm px-4 pb-3 pt-[calc(env(safe-area-inset-top,24px)+0.75rem)] flex items-center gap-3 shadow-sm z-30 border-b border-gray-100 max-w-md mx-auto"
     >
-      <button @click="goBack" class="text-gray-500 hover:text-pink-600 transition p-1 mr-1">
+      <button @click="goBack" class="text-gray-500 hover:text-black transition p-1 mr-1">
         <i class="fa-solid fa-arrow-left text-lg"></i>
       </button>
 
@@ -185,10 +185,10 @@ onUnmounted(() => {
 
     <main
       ref="messagesContainer"
-      class="flex flex-col h-full overflow-y-auto p-4 pt-20 pb-36 space-y-4"
+      class="flex flex-col h-full overflow-y-auto p-4 pt-[calc(env(safe-area-inset-top,24px)+5rem)] pb-36 space-y-4"
     >
       <div v-if="chatStore.isLoadingMessages" class="flex justify-center items-center h-full">
-        <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-3xl"></i>
+        <i class="fa-solid fa-circle-notch fa-spin text-black text-3xl"></i>
       </div>
 
       <template v-else>
@@ -211,7 +211,7 @@ onUnmounted(() => {
               class="px-4 py-2.5 rounded-2xl text-sm relative group shadow-sm flex flex-col gap-2"
               :class="
                 isMine(msg)
-                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-br-none'
+                  ? 'bg-black text-white rounded-br-none'
                   : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
               "
             >
@@ -233,7 +233,7 @@ onUnmounted(() => {
               <i
                 v-if="isMine(msg)"
                 class="fa-solid fa-check-double text-[10px]"
-                :class="msg.isRead ? 'text-pink-500' : 'text-gray-300'"
+                :class="msg.isRead ? 'text-black' : 'text-gray-300'"
               ></i>
             </div>
           </div>
@@ -262,7 +262,7 @@ onUnmounted(() => {
     </main>
 
     <footer
-      class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md px-4 pb-3 pt-2 border-t border-gray-100 z-30 max-w-md mx-auto shadow-[0_-5px_20px_rgba(0,0,0,0.03)]"
+      class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md px-4 pb-3 pt-2 border-t border-gray-100 z-30 max-w-md mx-auto shadow-[0_-5px_20px_rgba(0,0,0,0.03)]"
     >
       <!-- Quick Replies (Chips horizontales) -->
       <div class="flex overflow-x-auto gap-2 pb-3 mb-1 hide-scrollbar -mx-4 px-4">
@@ -270,22 +270,22 @@ onUnmounted(() => {
           v-for="(reply, idx) in quickReplies"
           :key="idx"
           @click="sendReply(reply)"
-          class="whitespace-nowrap px-3 py-1.5 bg-pink-50 text-pink-600 border border-pink-100/50 rounded-full text-xs font-semibold hover:bg-pink-100 active:scale-95 transition-transform"
+          class="whitespace-nowrap px-3 py-1.5 bg-gray-100 text-black border border-gray-200/50 rounded-full text-xs font-semibold hover:bg-gray-100 active:scale-95 transition-transform"
         >
           {{ reply }}
         </button>
       </div>
 
       <div
-        class="flex items-center gap-2 bg-gray-50 rounded-3xl px-2 py-2 border border-gray-100 focus-within:border-pink-300 focus-within:ring-2 focus-within:ring-pink-100 focus-within:bg-white transition shadow-sm"
+        class="flex items-center gap-2 bg-gray-50 rounded-3xl px-2 py-2 border border-gray-100 focus-within:border-gray-200 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition shadow-sm"
       >
         <button
           @click="fileInput?.click()"
           :disabled="isUploadingImage"
-          class="text-gray-400 hover:text-pink-500 transition p-2 flex items-center justify-center transform active:scale-90"
+          class="text-gray-400 hover:text-black transition p-2 flex items-center justify-center transform active:scale-90"
         >
           <i v-if="!isUploadingImage" class="fa-solid fa-paperclip text-lg"></i>
-          <i v-else class="fa-solid fa-circle-notch fa-spin text-lg text-pink-500"></i>
+          <i v-else class="fa-solid fa-circle-notch fa-spin text-lg text-black"></i>
         </button>
 
         <!-- Input invisible de archivo -->
@@ -311,7 +311,7 @@ onUnmounted(() => {
           class="w-10 h-10 rounded-full flex items-center justify-center transition shadow-sm shrink-0"
           :class="
             newMessage.trim()
-              ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white hover:shadow-pink-200 transform active:scale-95'
+              ? 'bg-black text-white hover:shadow-gray-200 transform active:scale-95'
               : 'bg-gray-200 text-gray-400 cursor-default'
           "
           :disabled="!newMessage.trim()"

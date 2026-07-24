@@ -19,7 +19,7 @@ onMounted(() => {
       <h1 class="text-2xl font-black">
         <span class="text-gray-900">Mis</span>
         <span
-          class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 ml-1"
+          class="text-black ml-1"
           >Favoritos</span
         >
         <span class="ml-1 text-red-500 text-xl">❤️</span>
@@ -42,7 +42,7 @@ onMounted(() => {
     <!-- Lista -->
     <main class="px-4">
       <div v-if="stylistStore.isLoadingFavorites" class="flex items-center justify-center py-20">
-        <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-3xl"></i>
+        <i class="fa-solid fa-circle-notch fa-spin text-black text-3xl"></i>
       </div>
 
       <div
@@ -50,9 +50,9 @@ onMounted(() => {
         class="text-center py-20 animate-fade-in"
       >
         <div
-          class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-pink-100"
+          class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-200"
         >
-          <i class="fa-regular fa-heart text-3xl text-pink-300"></i>
+          <i class="fa-regular fa-heart text-3xl text-gray-500"></i>
         </div>
         <h3 class="font-bold text-gray-900 text-lg mb-1">Sin favoritos aún</h3>
         <p class="text-gray-500 text-sm px-8">

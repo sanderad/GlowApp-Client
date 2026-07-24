@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
-import { onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch, ref } from 'vue'
 import BottomNav from '@/components/BottomNav.vue'
 import GlobalNotification from '@/components/GlobalNotification.vue'
 import { useAuthStore } from '@/stores/auth.store'
@@ -9,6 +9,7 @@ import router from './router'
 import { Preferences } from '@capacitor/preferences'
 import RN from './router/routeNames'
 import { StatusBar, Style } from '@capacitor/status-bar'
+import { App as CapacitorApp } from '@capacitor/app'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -61,6 +62,44 @@ onMounted(async () => {
   }
 
   window.addEventListener('popstate', handleBack)
+
+  const appHistory = ref<string[]>([])
+
+  const rootRoutes = [
+    RN.HOME,
+    RN.FAVORITOS,
+    RN.CHATS,
+    RN.PERFIL,
+    RN.LOGIN,
+    RN.ADMIN_DASHBOARD
+  ]
+
+  router.afterEach((to) => {
+    if (rootRoutes.includes(to.name as any)) {
+      appHistory.value = [to.fullPath]
+    } else if (appHistory.value.length > 1 && to.fullPath === appHistory.value[appHistory.value.length - 2]) {
+      appHistory.value.pop()
+    } else {
+      appHistory.value.push(to.fullPath)
+    }
+  })
+
+  CapacitorApp.addListener('backButton', () => {
+    if (rootRoutes.includes(route.name as any)) {
+      CapacitorApp.exitApp()
+    } else {
+      if (appHistory.value.length > 1) {
+        const prev = appHistory.value[appHistory.value.length - 2]
+        if (prev) {
+          router.replace(prev)
+        } else {
+          router.replace({ name: RN.HOME })
+        }
+      } else {
+        router.replace({ name: RN.HOME })
+      }
+    }
+  })
 })
 
 onUnmounted(() => {
@@ -70,7 +109,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray-50 min-h-screen font-sans pb-24 text-gray-800 relative overflow-x-hidden">
+  <div
+    class="bg-gray-50 min-h-screen font-sans text-gray-800 relative overflow-x-hidden"
+    :class="{ 'pb-24': route.meta.showBottomNav }"
+  >
     <GlobalNotification />
     <RouterView v-slot="{ Component }">
       <Transition name="fade-slide">

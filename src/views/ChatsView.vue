@@ -43,7 +43,7 @@ const openChat = (id: number) => {
     >
       <h1 class="text-2xl font-black text-gray-900 tracking-tight">
         Mis
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600"
+        <span class="text-black"
           >Chats</span
         >
         <i class="fa-solid fa-comment-dots text-gray-300 ml-1 text-xl"></i>
@@ -52,7 +52,7 @@ const openChat = (id: number) => {
 
     <main class="max-w-md mx-auto pt-2">
       <div v-if="chatStore.isLoadingChatsList" class="flex justify-center py-10">
-        <i class="fa-solid fa-circle-notch fa-spin text-pink-500 text-2xl"></i>
+        <i class="fa-solid fa-circle-notch fa-spin text-black text-2xl"></i>
       </div>
 
       <template v-else-if="chatStore.chatsList.length === 0">
@@ -96,7 +96,7 @@ const openChat = (id: number) => {
         <!-- Normal Client -->
         <div v-else class="p-6 text-center mt-10">
           <div
-            class="w-16 h-16 bg-pink-50 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-4"
+            class="w-16 h-16 bg-gray-100 text-black rounded-full flex items-center justify-center mx-auto mb-4"
           >
             <i class="fa-solid fa-comments text-2xl"></i>
           </div>
@@ -113,12 +113,12 @@ const openChat = (id: number) => {
         @click="openChat(chat.id)"
         class="p-4 border-b border-gray-100 flex gap-4 cursor-pointer transition relative group"
         :class="
-          chat.unreadCount > 0 ? 'bg-pink-50/40 hover:bg-pink-50' : 'bg-white hover:bg-gray-50'
+          chat.unreadCount > 0 ? 'bg-gray-100/40 hover:bg-gray-100' : 'bg-white hover:bg-gray-50'
         "
       >
         <div
           v-if="chat.unreadCount > 0"
-          class="absolute left-0 top-0 bottom-0 w-1.5 bg-pink-500 rounded-r-md"
+          class="absolute left-0 top-0 bottom-0 w-1.5 bg-black rounded-r-md"
         ></div>
 
         <div class="relative">
@@ -143,7 +143,7 @@ const openChat = (id: number) => {
             </h3>
             <span
               class="text-xs capitalize"
-              :class="chat.unreadCount > 0 ? 'text-pink-600 font-bold' : 'text-gray-400'"
+              :class="chat.unreadCount > 0 ? 'text-black font-bold' : 'text-gray-400'"
             >
               {{ getRelativeTime(chat.timestamp) }}
             </span>
@@ -164,7 +164,7 @@ const openChat = (id: number) => {
 
             <div
               v-if="chat.unreadCount > 0"
-              class="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold shadow-sm shadow-pink-200 shrink-0"
+              class="w-5 h-5 bg-black rounded-full flex items-center justify-center text-[10px] text-white font-bold shadow-sm shadow-gray-200 shrink-0"
             >
               {{ chat.unreadCount }}
             </div>
