@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-vinotinto: #621229;
+}
+
 body {
   padding-top: env(safe-area-inset-top, 24px);
   margin: 0;

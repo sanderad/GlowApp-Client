@@ -7,21 +7,21 @@ const chatStore = useChatStore()
 
 <template>
   <div
-    class="fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 py-3 px-6 max-w-md mx-auto left-0 right-0 z-50 rounded-t-2xl shadow-[0_-5px_20px_rgba(0,0,0,0.03)]"
+    class="right-0 bottom-0 left-0 z-50 fixed bg-white/95 shadow-[0_-5px_20px_rgba(0,0,0,0.03)] backdrop-blur-md mx-auto px-6 py-3 border-gray-100 border-t rounded-t-2xl w-full max-w-md"
   >
     <div class="flex justify-between items-center">
       <RouterLink
         to="/"
-        class="flex flex-col items-center transition group"
+        class="group flex flex-col items-center transition"
         active-class="text-black"
         exact-active-class="text-black"
       >
         <template #default="{ isActive }">
           <div
-            class="p-1.5 mb-1 rounded-xl transition"
+            class="mb-1 p-1.5 rounded-xl transition"
             :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
-            <i class="fa-solid fa-house text-lg"></i>
+            <i class="text-lg fa-solid fa-house"></i>
           </div>
           <span
             class="text-[10px]"
@@ -33,15 +33,15 @@ const chatStore = useChatStore()
 
       <RouterLink
         to="/favoritos"
-        class="flex flex-col items-center transition group"
+        class="group flex flex-col items-center transition"
         active-class="text-black"
       >
         <template #default="{ isActive }">
           <div
-            class="p-1.5 mb-1 rounded-xl transition"
+            class="mb-1 p-1.5 rounded-xl transition"
             :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
-            <i class="fa-solid fa-heart text-lg"></i>
+            <i class="text-lg fa-solid fa-heart"></i>
           </div>
           <span
             class="text-[10px]"
@@ -53,27 +53,27 @@ const chatStore = useChatStore()
 
       <RouterLink
         to="/chats"
-        class="flex flex-col items-center transition group"
-        active-class="text-black"
+        class="group flex flex-col items-center transition"
+        active-class="text-vinotinto"
       >
         <template #default="{ isActive }">
           <div class="relative">
             <div
-              class="p-1.5 mb-1 rounded-xl transition"
+              class="mb-1 p-1.5 rounded-xl transition"
               :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
             >
-              <i class="fa-solid fa-comment text-lg"></i>
+              <i class="text-vinotinto/90 text-lg fa-solid fa-comment"></i>
             </div>
             <div
               v-if="chatStore.totalUnreadCount > 0"
-              class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full border-2 border-white shadow-sm"
+              class="-top-1 -right-2 absolute flex justify-center items-center bg-vinotinto shadow-sm border-2 border-white rounded-full w-4 h-4 font-vinotinto text-[9px] text-white"
             >
               {{ chatStore.totalUnreadCount > 99 ? '99+' : chatStore.totalUnreadCount }}
             </div>
           </div>
           <span
             class="text-[10px]"
-            :class="isActive ? 'font-bold' : 'font-medium text-gray-400 group-hover:text-gray-600'"
+            :class="isActive ? 'font-bold' : 'font-medium text-vinotinto/60 group-hover:text-vinotinto/80'"
             >Chats</span
           >
         </template>
@@ -81,19 +81,19 @@ const chatStore = useChatStore()
 
       <RouterLink
         to="/perfil"
-        class="flex flex-col items-center transition group"
-        active-class="text-black"
+        class="group flex flex-col items-center transition"
+        active-class="text-vinotinto"
       >
         <template #default="{ isActive }">
           <div
-            class="p-1.5 mb-1 rounded-xl transition"
+            class="mb-1 p-1.5 rounded-xl transition"
             :class="isActive ? 'bg-gray-100 shadow-sm shadow-gray-200' : 'group-hover:bg-gray-50'"
           >
-            <i class="fa-solid fa-user text-lg"></i>
+            <i class="text-vinotinto/90 text-lg fa-solid fa-user"></i>
           </div>
           <span
             class="text-[10px]"
-            :class="isActive ? 'font-bold' : 'font-medium text-gray-400 group-hover:text-gray-600'"
+            :class="isActive ? 'font-bold' : 'font-medium text-vinotinto/60 group-hover:text-vinotinto/80'"
             >Perfil</span
           >
         </template>
